@@ -1,0 +1,20 @@
+<button class="sidebar-open btnsidebar" (click)="isCollapsed = !isCollapsed">
+    🧾
+  </button>
+  <fa-icon [icon]="faMenu" class="sidebar-open btnsidebar" (click)="isCollapsed = !isCollapsed"></fa-icon>
+   
+  <i class='fab fa-angular '></i>
+  <div class="sidebar-slider" [class.sidebar-slide-in]="isCollapsed">
+    <div class="set-sidebar-title">Menu</div>
+    <button class="sidebar-close" (click)="isCollapsed = !isCollapsed">x</button>
+    <div class="sidebar-content">
+        <h2 class="set-align"></h2>
+        <div class="set-sidebar-text">Dashbord</div>
+        <div class="set-sidebar-text">Home</div>
+        <div class="set-sidebar-text">Profile</div>
+        <div class="set-sidebar-text">Message</div>
+        <div class="set-sidebar-text">Help</div>
+        <div class="set-sidebar-text">Setting</div>
+        <div class="set-sidebar-text">Sign Out</div>
+    </div>
+  </div>
