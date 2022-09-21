@@ -1,0 +1,14 @@
+<div>debug works!
+
+<h3>Sekcje</h3>
+<ul class="sekcje" >
+  <li  *ngFor="let sekcja of sekcje">
+    <button type="button">
+      <span class="badge">{{sekcja|json}}</span>
+    </button>
+  </li>
+</ul>
+<h3>System</h3>
+{{system|json}}
+
+</div>

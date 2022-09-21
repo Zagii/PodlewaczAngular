@@ -1,0 +1,12 @@
+<div class="stopka">
+   <span id="data" >dd-mm-yyyy hh:mi:ss</span>
+   <span>Ostatni program: </span>
+   <span id="ostProg">Program1</span>
+   <span>, wl/wyl sekcja Sekcja1 o xx:yy </span>
+   <span>Stan sekcji:  </span>
+   <div style="text-align:center" *ngFor="let s of stany" >
+      <span [className]="s.stan ? 'dotOn' : 'dotOff'"> {{s.sekcjaId}}</span>
+      
+    </div>
+    
+</div>

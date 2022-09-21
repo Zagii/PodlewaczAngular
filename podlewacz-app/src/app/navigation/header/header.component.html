@@ -1,0 +1,43 @@
+<mat-toolbar>
+    <div fxHide.gt-xs>
+        <button mat-icon-button (click)="onToggleSidenav()">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </div>
+    <div>
+        <a routerLink="/home">
+            <div class="pozycja">
+                <div class="ikona"><mat-icon>home</mat-icon></div>
+                <div class="opis_ikony">Start</div>
+            </div>
+            </a>
+    </div>
+    <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
+        <ul fxLayout fxLayoutGap="15px" class="navigation-items">
+            <li>
+                <a routerLink="/harmonogram">
+                    <div class="pozycja">
+                        <div class="ikona"><mat-icon>calendar_today</mat-icon></div>
+                        <div class="opis_ikony">Harmonogram</div>
+                    </div>
+                    </a>
+            </li>
+            <li>
+                <a routerLink="/manual">
+                    <div class="pozycja">
+                        <div class="ikona"><mat-icon>manual</mat-icon></div>
+                        <div class="opis_ikony">Sterowanie ręczne</div>
+                    </div>
+                    </a>
+            </li>
+            <li>
+                <a routerLink="/ustawienia">
+                    <div class="pozycja">
+                        <div class="ikona"><mat-icon>settings</mat-icon></div>
+                        <div class="opis_ikony">Ustawienia</div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+  </mat-toolbar>

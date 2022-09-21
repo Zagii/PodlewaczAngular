@@ -1,0 +1,15 @@
+<mat-nav-list>
+    <P>Menu</P>
+    <a mat-list-item routerLink="/home" (click)="onSidenavClose()">
+        <mat-icon>home</mat-icon> <span class="nav-caption">Start</span>
+    </a>
+    <a mat-list-item routerLink="/harmonogram" (click)="onSidenavClose()">
+        <mat-icon>calendar_today</mat-icon> <span class="nav-caption">Harmonogram</span>   
+    </a>
+    <a mat-list-item routerLink="/manual" (click)="onSidenavClose()">
+        <mat-icon>manual</mat-icon><span class="nav-caption">Sterowanie ręczne</span>
+    </a>
+    <a mat-list-item routerLink="/ustawienia" (click)="onSidenavClose()">
+        <mat-icon>settings</mat-icon><span class="nav-caption">Ustawienia</span>
+    </a>
+  </mat-nav-list>

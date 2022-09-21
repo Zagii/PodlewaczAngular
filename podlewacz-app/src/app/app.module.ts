@@ -11,22 +11,44 @@ import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './material/material.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { LayoutComponent } from './layout/layout.component';
+import { HeaderComponent } from './navigation/header/header.component';
+import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
+import { ManualComponent } from './manual/manual.component';
+import { DebugComponent } from './debug/debug.component';
+import { BarComponent } from './bar/bar.component';
+import { UstawieniaComponent } from './ustawienia/ustawienia.component';
+import { HarmonogramComponent } from './harmonogram/harmonogram.component';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService } from './in-memory-data.service';
+
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
     HomeComponent,
-    LayoutComponent
+    LayoutComponent,
+    HeaderComponent,
+    SidenavListComponent,
+    ManualComponent,
+    DebugComponent,
+    BarComponent,
+    UstawieniaComponent,
+    HarmonogramComponent
   ],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
    // CollapseModule
     CollapseModule.forRoot(),
     FontAwesomeModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    HttpClientInMemoryWebApiModule.forRoot(
+      InMemoryDataService, { dataEncapsulation: false }
+    )
   ],
   providers: [],
   bootstrap: [AppComponent]

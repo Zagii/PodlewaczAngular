@@ -1,1 +1,20 @@
-<p>home works!</p>
+<section fxLayout="column" fxFlexAlign="stretch">
+    <div fxFlexAlign="center">
+      <p>Podlewacz <span> wersja 0.1</span></p>
+      
+    </div>
+  
+    <p>informacje</p>
+  
+    <mat-tab-group (selectedTabChange)="executeSelectedChange($event)">
+      <mat-tab label="Aktualny stan systemu"> 
+        <p>Tu można obejrzeć jaki obecnie jest stan na poszczególnych sekcjach</p> 
+      </mat-tab>
+      <mat-tab label="Pogoda">
+         <p>Aktualne warunki pogodowe i informacje nt. prognozy pogody</p>
+        </mat-tab>
+      <mat-tab label="Ostatnie akcje">
+         <p>Co się działo z systemem w ostatnim czasie</p>
+        </mat-tab>
+    </mat-tab-group>
+  </section>
