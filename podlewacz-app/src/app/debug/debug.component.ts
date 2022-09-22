@@ -21,5 +21,26 @@ export class DebugComponent implements OnInit {
     
   }
  
+  get(co:String):void{
+    console.log("Debug->Button: "+co);
+    switch(co)
+    {
+      case "system":
+        this.apiService.getSystem();
+        break;
+      case "sekcje":
+        this.apiService.getSekcje();
+        break;
+      case "programy":
+        this.apiService.getProgram();
+        break;
+      case "sekwencje":
+        this.apiService.getSekwencje();
+        break;
+      case "stan":
+        this.apiService.getStan();
+        break;
+    }
+  }
   
 }

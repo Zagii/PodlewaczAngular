@@ -7,16 +7,21 @@ div.stopka {
     background-color: rgb(128, 98, 0);
   }
   .dotOn {
-    height: 25px;
-    width: 25px;
+    height: 15px;
+    width: 15px;
     background-color: green;
     border-radius: 50%;
     display: inline-block;
+    font-size: x-small;
   }
   .dotOff {
-    height: 25px;
-    width: 25px;
+    height: 15px;
+    width: 15px;
     background-color: red;
     border-radius: 50%;
     display: inline-block;
+    font-size: x-small;
+  }
+  table {
+    width: 100%;
   }

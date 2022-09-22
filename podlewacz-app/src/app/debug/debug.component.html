@@ -1,14 +1,24 @@
-<div>debug works!
 
-<h3>Sekcje</h3>
-<ul class="sekcje" >
-  <li  *ngFor="let sekcja of sekcje">
-    <button type="button">
-      <span class="badge">{{sekcja|json}}</span>
-    </button>
-  </li>
-</ul>
-<h3>System</h3>
-{{system|json}}
+  <div class="row">
+    <div class="column middle">
+      <h3>Sekcje</h3>
+      <ul class="sekcje" >
+        <li  *ngFor="let sekcja of sekcje">
+          <button type="button">
+            <span class="badge">{{sekcja|json}}</span>
+          </button>
+        </li>
+      </ul>
+      <h3>System</h3>
+      {{system|json}}
+    </div>
+
+
+ <div class="column side">
+  <button type="button" class="btn btn-info" (click)="get('system')"> getSystem</button>
+  <button type="button" class="btn btn-info" (click)="get('sekcje')"> getSekcje</button>
+  <button type="button" class="btn btn-info" (click)="get('programy')"> getProgramy</button>
+  <button type="button" class="btn btn-info" (click)="get('sekwencje')"> getSekwencje</button>
+  <button type="button" class="btn btn-info" (click)="get('stan')"> getStan</button>
 
 </div>

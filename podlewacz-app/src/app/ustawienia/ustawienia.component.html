@@ -1,1 +1,30 @@
-<p>ustawienia works!</p>
+<section fxLayout="column" fxFlexAlign="stretch">
+    <div fxFlexAlign="center">
+      <p>Ustawienia </p>
+      
+    </div>
+  
+    <mat-tab-group >
+        <mat-tab label="Sekcje">
+            <h3>Sekcje</h3>
+           <app-sekcje></app-sekcje>
+           </mat-tab>
+      <mat-tab label="Czas/Geo">
+         <p>Aktualne warunki pogodowe i informacje nt. prognozy pogody</p>
+        </mat-tab>
+        <mat-tab label="Meteo">
+            <p>Aktualne warunki pogodowe i informacje nt. prognozy pogody</p>
+           </mat-tab>
+      <mat-tab label="MQTT">
+         <p>Co się działo z systemem w ostatnim czasie</p>
+        </mat-tab>
+        <mat-tab label="Podsumowanie"> 
+            <p>Liczba sekcji:</p>
+            <p>Liczba programów:</p>
+            <p>Czas od restartu systemu:</p>
+            <p>Tryb WiFi</p>
+            <p>WiFi SSID:</p>
+            <p>WiFi IP:</p> 
+          </mat-tab>
+    </mat-tab-group>
+</section>

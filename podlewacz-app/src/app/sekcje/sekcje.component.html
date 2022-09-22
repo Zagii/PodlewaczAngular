@@ -1,0 +1,18 @@
+<h2>Sekcje</h2>
+<ul class="sekcje">
+  <li *ngFor="let s of sekcje">
+    <button [class.selected]="s === selectedSekcja" type="button" (click)="onSelect(s)">
+      <span class="badge">{{s.id}}</span>
+      <span class="name">{{s.nazwa}}</span>
+    </button>
+  </li>
+</ul>
+
+<div *ngIf="selectedSekcja">
+  <h2>{{selectedSekcja.nazwa | uppercase}} Szczegóły</h2>
+  <div>id: {{selectedSekcja.id}}</div>
+  <div>
+    <label for="sekcja-nazwa">Nazwa sekcji: </label>
+    <input id="sekcja-nazwa" [(ngModel)]="selectedSekcja.nazwa" placeholder="nazwa">
+  </div>
+</div>
