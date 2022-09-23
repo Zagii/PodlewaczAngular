@@ -54,7 +54,7 @@
     display: inline-block;
     font-size: small;
     color: white;
-    padding: 0.8em 0.7em 0 0.7em;
+    padding: 0.8em 0.7em 0.7em 0.7em;
     background-color: #405061;
     line-height: 1em;
     margin-right: .8em;
@@ -63,4 +63,52 @@
   
   .sekcje .nazwa {
     align-self: center;
+    padding: 0.2em;
   }
+  /* Clear floats after the columns */
+  .row{
+    width: 95%;
+    padding: 10px;
+  }
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* Create three unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+}
+
+/* Left and right column */
+.column.polowa {
+  width: 50%;
+}
+.column.mala {
+  width: 30%;
+}
+.column.duza {
+  width: 70%;
+}
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+
+.sekcje-form mat-slide-toggle {
+  margin: 8px 0;
+  display: block;
+}
+
+.label
+{
+  margin: 0.1em;
+  
+}
+.wiersz
+{
+  display: block;
+}
+button{
+  margin: 10px;
+}

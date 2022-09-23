@@ -1,18 +1,114 @@
-<h2>Sekcje</h2>
-<ul class="sekcje">
-  <li *ngFor="let s of sekcje">
-    <button [class.selected]="s === selectedSekcja" type="button" (click)="onSelect(s)">
-      <span class="badge">{{s.id}}</span>
-      <span class="name">{{s.nazwa}}</span>
-    </button>
-  </li>
-</ul>
 
-<div *ngIf="selectedSekcja">
-  <h2>{{selectedSekcja.nazwa | uppercase}} Szczegóły</h2>
-  <div>id: {{selectedSekcja.id}}</div>
-  <div>
-    <label for="sekcja-nazwa">Nazwa sekcji: </label>
-    <input id="sekcja-nazwa" [(ngModel)]="selectedSekcja.nazwa" placeholder="nazwa">
+
+<div class="row">
+  <div class="column polowa">
+    <h2>Sekcje <button class="btn btn-success" (click)="dodajSekcje()">+ Dodaj nową sekcję</button></h2>
+    <ul class="sekcje">
+      <li *ngFor="let s of sekcje">
+        <button [class.selected]="s === selectedSekcja" type="button" (click)="onSelect(s)">
+          
+          <span class="badge">{{s.id}}</span>
+          <div [ngSwitch]="s.typ">
+            <mat-icon  class="nazwa" *ngSwitchCase="0">power_input</mat-icon>
+            <mat-icon  class="nazwa" *ngSwitchCase="1">settings_remote</mat-icon>
+            <mat-icon  class="nazwa" *ngSwitchCase="2">settings_remote</mat-icon>
+        </div>
+          <span class="nazwa">{{s.nazwa}}</span>
+          
+        </button>
+      </li>
+    </ul>
+  </div>
+  <div class="column polowa">
+   
+    <div *ngIf="selectedSekcja">
+      <h2>{{selectedSekcja.nazwa}} Szczegóły <button class="btn btn-danger">X Usuń sekcję: {{selectedSekcja.nazwa}}</button></h2>
+      
+      <div>id: {{selectedSekcja.id}}</div>
+      <div>
+        <div class="row">
+          <div class="column polowa">
+        <label class="label" for="sekcja-nazwa">Nazwa sekcji: </label>
+        </div>
+      
+          <div class="column polowa">
+        <input id="sekcja-nazwa" [(ngModel)]="selectedSekcja.nazwa" placeholder="nazwa">
+        </div>
+        </div>
+      </div>
+
+      <mat-slide-toggle [(ngModel)]="selectedSekcja.inverted">Odwrócona logika</mat-slide-toggle>
+      
+      <div><label id="radio-group-label">Typ sekcji</label></div>
+      <mat-radio-group aria-labelledby="radio-group-label" class="radio-group"
+        [(ngModel)]="selectedSekcja.typ">
+       
+        <mat-radio-button class="radio-button" *ngFor="let typ of typySekcji;let index=index;"
+          [value]="index"
+          (change)="onItemChange(typ,index)">
+          {{index}} {{typ}} 
+        </mat-radio-button>
+      </mat-radio-group>
+ <!--     <div>Your favorite season is: {{wybranyTyp}}</div> -->
+      <div [ngSwitch]="wybranyTyp">
+        <div *ngSwitchCase="0">
+         
+            <label class="label" for="sekcja-pin">Numer pinu: </label>
+            <input id="sekcja-pin" [(ngModel)]="selectedSekcja.pin" placeholder="pin" type="number"
+            max="7" min="0">
+          
+        </div>
+        <div *ngSwitchCase="1">
+          <div class="row">
+            <div class="column mala">
+              <label  for="sekcja-apiOnUrl">apiOnUrl </label>
+            </div>
+            <div class="column duza">
+              <input  id="sekcja-apiOnUrl" [(ngModel)]="selectedSekcja.apiOnUrl" placeholder="apiOnUrl">
+            </div>
+          </div>
+          <div class="row">
+            <div class="column mala">
+              <label class="label" for="sekcja-apiOnJson">apiOnJson</label>
+            </div>
+            <div class="column duza">
+              <input id="sekcja-apiOnJson" [(ngModel)]="selectedSekcja.apiOnJson" placeholder="apiOnJson">
+            </div>
+          </div>  
+          <div class="row">
+            <div class="column mala">
+              <label class="label" for="sekcja-apiOffUrl">apiOffUrl</label>
+            </div>
+            <div class="column duza">
+              <input id="sekcja-apiOffUrl" [(ngModel)]="selectedSekcja.apiOffUrl" placeholder="apiOffUrl">
+            </div>
+          </div>
+          <div class="row">
+            <div class="column mala">
+              <label class="label" for="sekcja-apiOffJson">apiOffJson</label>
+            </div>
+            <div class="column duza">
+              <input id="sekcja-apiOffJson" [(ngModel)]="selectedSekcja.apiOffJson" placeholder="apiOffJson">
+            </div>
+          </div>
+            
+        </div>
+        <div *ngSwitchCase="2">
+          TODO: narazie nie obslugiwane
+          mqttTopicOn?: string;
+          mqttTopicState?: string;
+          mqttTopicOff?: string;
+          mqttOnCommand?: string;
+          mqttOffCommand?: string;
+        </div>
+        <div *ngSwitchDefault>Nieznany typ</div>
+    </div>
+    
+      
+    <button class="btn btn-success" type="submit">Zapisz zmiany</button>
+    <button class="btn btn-danger" type="cancel">Anuluj</button>
+    </div>
+    
   </div>
 </div>
+

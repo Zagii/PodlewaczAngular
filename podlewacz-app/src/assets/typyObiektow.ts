@@ -2,10 +2,20 @@ export interface Config {
   ipUrl: string;
 }
 export interface Sekcja {
-    id: number;
+    id?: number;
     nazwa: string;
     typ:number;
-    pin: number;
+    pin?: number;
+    inverted: boolean; // odwrocona logika na pinie
+    apiOnUrl?: string;
+    apiOnJson?: string;
+    apiOffUrl?: string;
+    apiOffJson?: string;
+    mqttTopicOn?: string;
+    mqttTopicState?: string;
+    mqttTopicOff?: string;
+    mqttOnCommand?: string;
+    mqttOffCommand?: string;
   }
 
 export interface System {
