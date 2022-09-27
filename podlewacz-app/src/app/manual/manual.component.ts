@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../api.service';
+import { Sekcja } from 'src/assets/typyObiektow';
 
 @Component({
   selector: 'app-manual',

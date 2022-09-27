@@ -21,7 +21,7 @@ import { UstawieniaComponent } from './ustawienia/ustawienia.component';
 import { HarmonogramComponent } from './harmonogram/harmonogram.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './in-memory-data.service';
+//import { InMemoryDataService } from './in-memory-data.service';
 import { SekcjeComponent } from './sekcje/sekcje.component';
 
 @NgModule({
@@ -51,9 +51,9 @@ import { SekcjeComponent } from './sekcje/sekcje.component';
     FontAwesomeModule,
     MaterialModule,
     FlexLayoutModule,
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
-    )
+    //HttpClientInMemoryWebApiModule.forRoot(
+  //    InMemoryDataService, { dataEncapsulation: false }
+    //)
   ],
   providers: [],
   bootstrap: [AppComponent]

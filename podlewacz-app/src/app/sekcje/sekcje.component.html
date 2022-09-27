@@ -2,12 +2,12 @@
 
 <div class="row">
   <div class="column polowa">
-    <h2>Sekcje <button class="btn btn-success" (click)="dodajSekcje()">+ Dodaj nową sekcję</button></h2>
+    <h2>Sekcje <button class="btn btn-success" [disabled]="zmieniana" (click)="dodajSekcje()">+ Dodaj nową sekcję</button></h2>
     <ul class="sekcje">
       <li *ngFor="let s of sekcje">
         <button [class.selected]="s === selectedSekcja" type="button" (click)="onSelect(s)">
           
-          <span class="badge">{{s.id}}</span>
+          <span class="badge">{{s.sekcjaId}}</span>
           <div [ngSwitch]="s.typ">
             <mat-icon  class="nazwa" *ngSwitchCase="0">power_input</mat-icon>
             <mat-icon  class="nazwa" *ngSwitchCase="1">settings_remote</mat-icon>
@@ -22,9 +22,10 @@
   <div class="column polowa">
    
     <div *ngIf="selectedSekcja">
-      <h2>{{selectedSekcja.nazwa}} Szczegóły <button class="btn btn-danger">X Usuń sekcję: {{selectedSekcja.nazwa}}</button></h2>
+      <h2>{{selectedSekcja.nazwa}} Szczegóły 
+        <button class="btn btn-danger" (click)="usunSekcje()">X Usuń sekcję: {{selectedSekcja.nazwa}}</button></h2>
       
-      <div>id: {{selectedSekcja.id}}</div>
+      <div>id: {{selectedSekcja.sekcjaId}}</div>
       <div>
         <div class="row">
           <div class="column polowa">
@@ -32,14 +33,19 @@
         </div>
       
           <div class="column polowa">
-        <input id="sekcja-nazwa" [(ngModel)]="selectedSekcja.nazwa" placeholder="nazwa">
+        <input id="sekcja-nazwa" [(ngModel)]="selectedSekcja.nazwa"  (ngModelChange)="onChange($event)" placeholder="nazwa">
         </div>
         </div>
       </div>
 
-      <mat-slide-toggle [(ngModel)]="selectedSekcja.inverted">Odwrócona logika</mat-slide-toggle>
+      <mat-slide-toggle [(ngModel)]="selectedSekcja.inverted" (ngModelChange)="onChange($event)">Odwrócona logika</mat-slide-toggle>
       
-      <div><label id="radio-group-label">Typ sekcji</label></div>
+      <div><label id="radio-group-label">Typ sekcji  
+      <span [ngSwitch]="selectedSekcja.typ">
+        <mat-icon  class="nazwa" *ngSwitchCase="0">power_input</mat-icon>
+        <mat-icon  class="nazwa" *ngSwitchCase="1">settings_remote</mat-icon>
+        <mat-icon  class="nazwa" *ngSwitchCase="2">settings_remote</mat-icon>
+      </span>:</label></div>
       <mat-radio-group aria-labelledby="radio-group-label" class="radio-group"
         [(ngModel)]="selectedSekcja.typ">
        
@@ -54,7 +60,7 @@
         <div *ngSwitchCase="0">
          
             <label class="label" for="sekcja-pin">Numer pinu: </label>
-            <input id="sekcja-pin" [(ngModel)]="selectedSekcja.pin" placeholder="pin" type="number"
+            <input id="sekcja-pin"(ngModelChange)="onChange($event)" [(ngModel)]="selectedSekcja.pin" placeholder="pin" type="number"
             max="7" min="0">
           
         </div>
@@ -64,7 +70,7 @@
               <label  for="sekcja-apiOnUrl">apiOnUrl </label>
             </div>
             <div class="column duza">
-              <input  id="sekcja-apiOnUrl" [(ngModel)]="selectedSekcja.apiOnUrl" placeholder="apiOnUrl">
+              <input  id="sekcja-apiOnUrl" [(ngModel)]="selectedSekcja.apiOnUrl" (ngModelChange)="onChange($event)" placeholder="apiOnUrl">
             </div>
           </div>
           <div class="row">
@@ -72,7 +78,7 @@
               <label class="label" for="sekcja-apiOnJson">apiOnJson</label>
             </div>
             <div class="column duza">
-              <input id="sekcja-apiOnJson" [(ngModel)]="selectedSekcja.apiOnJson" placeholder="apiOnJson">
+              <input id="sekcja-apiOnJson" [(ngModel)]="selectedSekcja.apiOnJson" (ngModelChange)="onChange($event)" placeholder="apiOnJson">
             </div>
           </div>  
           <div class="row">
@@ -80,7 +86,7 @@
               <label class="label" for="sekcja-apiOffUrl">apiOffUrl</label>
             </div>
             <div class="column duza">
-              <input id="sekcja-apiOffUrl" [(ngModel)]="selectedSekcja.apiOffUrl" placeholder="apiOffUrl">
+              <input id="sekcja-apiOffUrl" [(ngModel)]="selectedSekcja.apiOffUrl" (ngModelChange)="onChange($event)" placeholder="apiOffUrl">
             </div>
           </div>
           <div class="row">
@@ -88,7 +94,7 @@
               <label class="label" for="sekcja-apiOffJson">apiOffJson</label>
             </div>
             <div class="column duza">
-              <input id="sekcja-apiOffJson" [(ngModel)]="selectedSekcja.apiOffJson" placeholder="apiOffJson">
+              <input id="sekcja-apiOffJson" [(ngModel)]="selectedSekcja.apiOffJson" (ngModelChange)="onChange($event)" placeholder="apiOffJson">
             </div>
           </div>
             
@@ -105,8 +111,8 @@
     </div>
     
       
-    <button class="btn btn-success" type="submit">Zapisz zmiany</button>
-    <button class="btn btn-danger" type="cancel">Anuluj</button>
+    <button class="btn btn-success" [disabled]="!zmieniana" (click)="wyslijZmiany()" type="submit">Zapisz zmiany</button>
+    <button class="btn btn-danger" [disabled]="!zmieniana" (click)="analujZmiany()" type="cancel">Anuluj</button>
     </div>
     
   </div>

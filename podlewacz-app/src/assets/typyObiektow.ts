@@ -2,7 +2,7 @@ export interface Config {
   ipUrl: string;
 }
 export interface Sekcja {
-    id?: number;
+    sekcjaId?: number;
     nazwa: string;
     typ:number;
     pin?: number;
