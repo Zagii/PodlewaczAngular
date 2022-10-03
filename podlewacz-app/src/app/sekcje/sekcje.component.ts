@@ -20,6 +20,7 @@ export class SekcjeComponent implements OnInit {
       {
         this.sekcje=s;
         this.selectedSekcja=JSON.parse(JSON.stringify(s[0]));//s[0];
+        this.zmieniana=false;
         if(this.selectedSekcja?.typ)
           this.wybranyTyp=this.selectedSekcja.typ;
     });
@@ -89,7 +90,7 @@ export class SekcjeComponent implements OnInit {
     //post
     //this.selectedSekcja = JSON.parse(JSON.stringify(sekcja));
     if(this.selectedSekcja)
-      this.apiService.postSekcje(this.selectedSekcja);
+      this.apiService.sendSekcje(this.selectedSekcja);
     else
      console.log(this.selectedSekcja);
   }

@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="column polowa">
+      <h2>Programy 
+        <button class="btn btn-success" [disabled]="zmieniany" (click)="dodajProgram()">
+            + Dodaj nowy program
+        </button>
+    </h2>
+  
+      <ul class="programy">
+        <li *ngFor="let p of programy">
+          <button [class.selected]="p === selectedProgram" type="button" (click)="selectedProgram=p">
+            
+            <span class="badge">{{p.programId}}</span>
+            <span class="nazwa">{{p.nazwa}}</span>
+            <span class="nazwa">{{p.aktywny}}</span>
+            
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="column polowa">
+   
+        <div *ngIf="selectedProgram">
+        <h2>{{selectedProgram.nazwa}} Szczegóły 
+            <button class="btn btn-danger" (click)="usunProgram()">X Usuń program: {{selectedProgram.nazwa}}</button></h2>   
+        <div>id: {{selectedProgram.programId}}</div>
+        <div>nazwa: {{selectedProgram.nazwa}}</div>
+        <div>
+            <div class="row">
+              <div class="column polowa">
+            <label class="label" for="sekcja-nazwa">Nazwa: </label>
+            </div>
+          
+              <div class="column polowa">
+            <input id="sekcja-nazwa" [(ngModel)]="selectedProgram.nazwa"  (ngModelChange)="onChange($event)" placeholder="nazwa">
+            </div>
+            </div>
+          </div>
+        <mat-slide-toggle [(ngModel)]="selectedProgram.aktywny" (ngModelChange)="onChange($event)">Aktywny</mat-slide-toggle>
+    
+        <div>godziny uruchomienia: {{selectedProgram.godzinyTab}}</div>
+        <div>dni: {{selectedProgram.dni}}</div>    
+        <div>Ostatnio uruchomiony: {{selectedProgram.lastProgramRun}}</div>
+      
+        <button class="btn btn-success" [disabled]="!zmieniany" (click)="wyslijZmiany()" type="submit">Zapisz zmiany</button>
+        <button class="btn btn-danger" [disabled]="!zmieniany" (click)="analujZmiany()" type="cancel">Anuluj</button>
+        
+    </div>
+    </div>
+</div>
+

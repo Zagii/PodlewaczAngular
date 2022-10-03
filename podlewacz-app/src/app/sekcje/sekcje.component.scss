@@ -65,32 +65,8 @@
     align-self: center;
     padding: 0.2em;
   }
-  /* Clear floats after the columns */
-  .row{
-    width: 95%;
-    padding: 3px;
-  }
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-/* Create three unequal columns that floats next to each other */
-.column {
-  float: left;
-  padding: 10px;
-}
 
-/* Left and right column */
-.column.polowa {
-  width: 50%;
-}
-.column.mala {
-  width: 30%;
-}
-.column.duza {
-  width: 70%;
-}
+
 .mat-radio-button ~ .mat-radio-button {
   margin-left: 16px;
 }

@@ -1,6 +1,69 @@
 <section fxLayout="column" fxFlexAlign="stretch">
     <div fxFlexAlign="center">
-      <p>manual </p>
       
-    </div>
+              <h2>Sterowanie ręczne </h2>
+              
+      
+            </div>
+      <mat-tab-group >
+        <mat-tab label="Sekcje"> 
+          <div class="tabContainer">
+          <div class="row">
+            <div class="column s10proc">
+              <fa-icon [icon]="faClock"  size="5x" [ngClass]="czyNaCzas? 'dotOn' : 'dotOff' "></fa-icon>
+                   
+            </div>
+            <div class="column reszta">
+              Załączanie czasowe <br>
+              <mat-slide-toggle [(ngModel)]="czyNaCzas" >{{ czyNaCzas? 'Tak':'Nie'}} </mat-slide-toggle>
+            </div>
+            
+          </div>
+
+          <div class="row" *ngIf="czyNaCzas">
+            <div class="column side">
+              <div class="czasLbl" >{{czasToStr()}}</div>
+            </div>
+            <div class="column s20proc">
+              <button class='btn btn-success btnCzas' (click)="changeCzas(5*60)">+5 min</button>
+              <button class='btn btn-success btnCzas' (click)="changeCzas(60)">+1 min</button>
+              <button class='btn btn-success btnCzas' (click)="changeCzas(10)">+10 sek</button>
+              <button class='btn btn-success btnCzas' (click)="changeCzas(1)">+1 sek</button>
+            </div>
+            <div class="column s20proc">
+              <button class='btn btn-danger btnCzas' (click)="changeCzas(-5*60)">-5 min</button>
+              <button class='btn btn-danger btnCzas' (click)="changeCzas(-60)">-1 min</button>
+              <button class='btn btn-danger btnCzas' (click)="changeCzas(-10)">-10 sek</button>
+              <button class='btn btn-danger btnCzas' (click)="changeCzas(-1)">-1 sek</button>
+            </div>
+            <div class="column reszta">
+              
+            </div>
+            </div>
+          
+          <div class="row">
+            <div class="column middle">
+              <div  *ngFor="let s of sekcje"  class="sekcjaContainer">
+                <button [ngClass]="setBtnStyle(s)">
+                 <span>
+                  <fa-icon [icon]="faShower" size="2xl"></fa-icon><BR>
+                     {{s.nazwa}}
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        </mat-tab>
+        <mat-tab label="Programy"> 
+          <div class="tabContainer">
+            <app-programy></app-programy>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+      
+          
+      
+
+    
 </section>

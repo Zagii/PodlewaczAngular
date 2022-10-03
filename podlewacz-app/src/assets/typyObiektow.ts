@@ -33,11 +33,11 @@ export interface System {
 
   export interface Program {
     nazwa:String;
-    id: number; //id programu
+    programId?: number; //id programu
     dni: String // w jakich dniach tygodnia program jest uruchamiany 0-nd,1-pn, ..6-sb
-    lastProgramRun:number; //data w sekundach od ostatnio uruchomionego programu
+    lastProgramRun?:number; //data w sekundach od ostatnio uruchomionego programu
     aktywny:boolean; // czy program jest aktywny
-    godzinyTab:number[]; // zapis w formacie zulu hhmm
+    godzinyTab?:number[]; // zapis w formacie zulu hhmm
   }
   export interface Sekwencja {
     programId:number;
@@ -52,4 +52,6 @@ export interface System {
   export interface Stan {
     sekcjaId:number;
     stan:boolean;
+    autoSwitchActive:number;
+    lastStateChanged:number;
   }

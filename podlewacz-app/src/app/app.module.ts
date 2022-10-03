@@ -23,6 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 //import { InMemoryDataService } from './in-memory-data.service';
 import { SekcjeComponent } from './sekcje/sekcje.component';
+import { ProgramyComponent } from './programy/programy.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { SekcjeComponent } from './sekcje/sekcje.component';
     UstawieniaComponent,
     HarmonogramComponent,
     SekcjeComponent,
+    ProgramyComponent,
     
   ],
   imports: [

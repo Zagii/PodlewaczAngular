@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse  } from '@angular/common/http';
-import { Observable, Subject, throwError } from 'rxjs';
+import { Observable, OperatorFunction, Subject, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { Config,Sekcja,System,Program,Sekwencja,Stan } from 'src/assets/typyObiektow';
+
 
 
 const GET= "/get";
 const GET_SYSTEM="/get/system";
 const GET_STAN="/get/stan";
 const GET_SEKCJE="/get/sekcje";
-const SET_SEKCJE="/set/sekcje";
+//const SET_SEKCJE="/set/sekcje";
 const SET_SEKCJA="/set/sekcja";
 const DEL_SEKCJA="/del/sekcja";
 const GET_PROGRAMY="/get/programy";
@@ -20,13 +21,14 @@ const SET_SEKWENCJA="/set/sekwencja";
 const DEL_SEKWENCJA="/del/sekwencja";
 const START_PROGRAM="/start/program";
 const STOP_PROGRAM="/stop/program";
+const CONFIG_URL="/assets/config.json";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private configUrl = 'assets/config.json';
-  private ipUrl="api"; // = "http://192.168.1.179"; //'api';//'192.168.4.1';
+  
+  private ipUrl=""; // = "http://192.168.1.179"; //'api';//'192.168.4.1';
   
 
   
@@ -44,9 +46,11 @@ export class ApiService {
   
 
   constructor(private http: HttpClient,
+    
     //private messageService: MessageServicet
     )
   {
+    
       this.getConfig();
       this.getSekcje();
       this.getSystem();
@@ -56,11 +60,12 @@ export class ApiService {
   }
   
   getConfig() {
-      return this.http.get<Config>(this.configUrl)
-      .pipe(
-        retry(3), // retry a failed request up to 3 times
-        catchError(this.handleError) // then handle the error
-      )
+
+      return this.http.get<Config>(CONFIG_URL)
+      //.pipe(
+       // retry(3), // retry a failed request up to 3 times
+       // catchError(this.handleError) // then handle the error
+    //  )
       .subscribe((data: Config) => {
         console.log('Konfiguracja: '+JSON.stringify(data));
         this.ipUrl=data.ipUrl;
@@ -68,6 +73,7 @@ export class ApiService {
       }
     );
   }
+  
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -82,31 +88,42 @@ export class ApiService {
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
   getConfigResponse(): Observable<HttpResponse<Config>> {
-    return this.http.get<Config>(this.configUrl, { observe: 'response' })
+    return this.http.get<Config>(CONFIG_URL, { observe: 'response' })
     .pipe(
-      retry(3), // retry a failed request up to 3 times
+   //   retry(3), // retry a failed request up to 3 times
       catchError(this.handleError) // then handle the error
     );
   }
   getSekcjeSubject():Subject<Sekcja[]> {return this.sekcjeSubject;}
   getSekcje(): void {
-      
+      console.log("Sekcje: "+this.ipUrl+GET_SEKCJE);
       this.http.get<any>(this.ipUrl+GET_SEKCJE)
-      .pipe(
+    /*  .pipe(
      //   retry(3), // retry a failed request up to 3 times
         catchError(this.handleError) // then handle the error
-      )
+      )*/
+
       .subscribe(sekcje =>
         { 
-          this.sekcjeSubject.next(sekcje.Sekcje);   
+          console.log("Sekcje: "+JSON.stringify(sekcje));
+          if(sekcje!=undefined)
+          {
+            this.sekcjeSubject.next(sekcje);   
+          }
+          
         });
     }
-    postSekcje(sekcja:Sekcja): void {
+    sendSekcje(sekcja:Sekcja): void {
       
-      console.log("postSekcje: "+JSON.stringify(sekcja));
+      console.log("sendSekcje: "+JSON.stringify(sekcja));
+      const options = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json', }), 
+        body: {plain:sekcja},
+      };
+     
       this.http.post<Sekcja[]>(this.ipUrl+SET_SEKCJA,sekcja)
       .pipe(
-        retry(3), // retry a failed request up to 3 times
+   //     retry(3), // retry a failed request up to 3 times
         catchError(this.handleError) // then handle the error
       )
       .subscribe(sekcje =>
@@ -125,7 +142,7 @@ export class ApiService {
       console.log("usunSekcje: "+JSON.stringify(sekcja));
       this.http.delete<Sekcja[]>(this.ipUrl+DEL_SEKCJA,options)
       .pipe(
-        retry(3), // retry a failed request up to 3 times
+    //    retry(3), // retry a failed request up to 3 times
         catchError(this.handleError) // then handle the error
       )
       .subscribe(sekcje =>
@@ -135,9 +152,10 @@ export class ApiService {
     }
   getSystemSubject():Subject<System> {return this.systemSubject;}
   getSystem(): void{
+    console.log("getSystem: "+this.ipUrl+GET_SYSTEM);
     this.http.get<System>(this.ipUrl+GET_SYSTEM)
     .pipe(
-      retry(3), // retry a failed request up to 3 times
+   //   retry(3), // retry a failed request up to 3 times
       catchError(this.handleError) // then handle the error
     )
     .subscribe(s =>
@@ -147,9 +165,10 @@ export class ApiService {
   }
   getProgramSubject():Subject<Program[]> {return this.programSubject;}
   getProgram(): void{
+    console.log("getProgram: "+this.ipUrl+GET_PROGRAMY);
     this.http.get<Program[]>(this.ipUrl+GET_PROGRAMY)
     .pipe(
-      retry(3), // retry a failed request up to 3 times
+  //    retry(3), // retry a failed request up to 3 times
       catchError(this.handleError) // then handle the error
     )
     .subscribe(s =>
@@ -157,29 +176,77 @@ export class ApiService {
         this.programSubject.next(s);   
       }); 
   }
+  sendProgram(program:Program): void {
+      
+    console.log("sendProgram: "+JSON.stringify(program));
+    const options = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', }), 
+      body: {plain:program},
+    };
+   
+    this.http.post<Program[]>(this.ipUrl+SET_PROGRAM,program)
+    .pipe(
+ //     retry(3), // retry a failed request up to 3 times
+      catchError(this.handleError) // then handle the error
+    )
+    .subscribe(program =>
+      { 
+        this.programSubject.next(program);   
+      });
+  }
+  deleteProgram(program:Program)
+  {
+
+    const options = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', }), 
+      body: {id: program.programId },
+    };
+
+    console.log("usunProgram: "+JSON.stringify(program));
+    this.http.delete<Program[]>(this.ipUrl+DEL_PROGRAM,options)
+    .pipe(
+  //    retry(3), // retry a failed request up to 3 times
+      catchError(this.handleError) // then handle the error
+    )
+    .subscribe(program =>
+      { 
+        this.programSubject.next(program);   
+      });
+  }
   getSekwencjeSubject():Subject<Sekwencja[]> {return this.sekwencjaSubject;}
   getSekwencje(): void{
+    console.log("getSekwencje: "+this.ipUrl+GET_SEKWENCJE);
     this.http.get<Sekwencja[]>(this.ipUrl+GET_SEKWENCJE)
     .pipe(
-      retry(3), // retry a failed request up to 3 times
+  //    retry(3), // retry a failed request up to 3 times
       catchError(this.handleError) // then handle the error
     )
     .subscribe(s =>
       { 
-        this.sekwencjaSubject.next(s);   
+        if(s)
+         this.sekwencjaSubject.next(s);   
+       else
+       console.log("Brak sekwencji");
       }); 
   }
   getStanSubject():Subject<Stan[]> {return this.stanSubject;}
   getStan(): void{
-    this.http.get<Stan[]>(this.ipUrl+GET_STAN)
+    console.log("getStan: "+this.ipUrl+GET_STAN);
+    this.http.get<Stan[]>(this.ipUrl+GET_STAN,{params:{plain:"stan"}})
     .pipe(
-      retry(3), // retry a failed request up to 3 times
+   //   retry(3), // retry a failed request up to 3 times
       catchError(this.handleError) // then handle the error
     )
     .subscribe(s =>
       { 
-        s=s.sort((a,b)=>a.sekcjaId-b.sekcjaId);
-        this.stanSubject.next(s);   
+        if(s)
+        {
+          s=s.sort((a,b)=>a.sekcjaId-b.sekcjaId);
+          this.stanSubject.next(s);   
+        }else
+        {
+          console.log("brak stanow");
+        }
       }); 
   }
 }

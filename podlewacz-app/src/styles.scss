@@ -10,5 +10,53 @@ body {
     background-color: white; 
     color: balck;
 }
-
+.tabContainer{
+    padding: 10px;
+    width: 90%;
+  }
+  
 /* for sidenav to take a whole page */
+
+ /* Clear floats after the columns */
+ .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  /* Create three unequal columns that floats next to each other */
+  .column {
+    float: left;
+    padding: 10px;
+  }
+  
+  /* Left and right column */
+  .column.side {
+    width: 20%;
+  }
+  .column.s15proc {
+    width: 10%;
+  }
+  .column.s50proc {
+    width: 50%;
+  }
+  /* Left and right column */
+  .column.s10proc {
+    width: 10%;
+  }
+  .column.reszta {
+    width: auto;
+  }
+  /* Middle column */
+  .column.middle {
+    width: 80%;
+  }
+  /* Left and right column */
+.column.polowa {
+    width: 50%;
+  }
+  .column.mala {
+    width: 30%;
+  }
+  .column.duza {
+    width: 70%;
+  }
