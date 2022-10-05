@@ -3,9 +3,9 @@
 <div class="row">
   <div class="column polowa">
     <h2>Sekcje <button class="btn btn-success" [disabled]="zmieniana" (click)="dodajSekcje()">+ Dodaj nową sekcję</button></h2>
-    <ul class="sekcje">
+    <ul class="lista">
       <li *ngFor="let s of sekcje">
-        <button [class.selected]="s === selectedSekcja" type="button" (click)="onSelect(s)">
+        <button [class.selected]="selectedSekcja && s.sekcjaId === selectedSekcja.sekcjaId" type="button" (click)="onSelect(s)">
           
           <span class="badge">{{s.sekcjaId}}</span>
           <div [ngSwitch]="s.typ">

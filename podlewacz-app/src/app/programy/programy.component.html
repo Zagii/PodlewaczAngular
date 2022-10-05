@@ -6,16 +6,17 @@
         </button>
     </h2>
   
-      <ul class="programy">
-        <li *ngFor="let p of programy">
-          <button [class.selected]="p === selectedProgram" type="button" (click)="selectedProgram=p">
+      <ul class="lista">
+        <li *ngFor="let p of programy">    
+          <span [ngClass]="p.aktywny?'zielony':'czerwony'"><mat-icon>{{p.aktywny?'check_circle_outline':'highlight_off'}}</mat-icon></span>
             
+          <button [class.selected]="selectedProgram && p.programId===selectedProgram.programId" type="button" (click)="changeSelectProgram(p)">
             <span class="badge">{{p.programId}}</span>
             <span class="nazwa">{{p.nazwa}}</span>
-            <span class="nazwa">{{p.aktywny}}</span>
-            
           </button>
+           
         </li>
+      
       </ul>
     </div>
 
@@ -23,13 +24,14 @@
    
         <div *ngIf="selectedProgram">
         <h2>{{selectedProgram.nazwa}} Szczegóły 
-            <button class="btn btn-danger" (click)="usunProgram()">X Usuń program: {{selectedProgram.nazwa}}</button></h2>   
+            <button class="btn btn-danger" (click)="usunProgram()"><mat-icon>delete_forever</mat-icon> Usuń program: {{selectedProgram.nazwa}}</button></h2>   
         <div>id: {{selectedProgram.programId}}</div>
-        <div>nazwa: {{selectedProgram.nazwa}}</div>
+        <div *ngIf="selectedProgram && selectedProgram.lastProgramRun && selectedProgram.lastProgramRun>=0">Ostatnio uruchomiony: {{selectedProgram.lastProgramRun}}</div>
+      
         <div>
             <div class="row">
               <div class="column polowa">
-            <label class="label" for="sekcja-nazwa">Nazwa: </label>
+            <label class="label" for="sekcja-nazwa">Nazwa programu: </label>
             </div>
           
               <div class="column polowa">
@@ -37,11 +39,46 @@
             </div>
             </div>
           </div>
-        <mat-slide-toggle [(ngModel)]="selectedProgram.aktywny" (ngModelChange)="onChange($event)">Aktywny</mat-slide-toggle>
-    
-        <div>godziny uruchomienia: {{selectedProgram.godzinyTab}}</div>
+          <h4>Status programu</h4>
+        <mat-slide-toggle [(ngModel)]="selectedProgram.aktywny" (ngModelChange)="onChange($event)">{{selectedProgram.aktywny?'Aktywny':'Nieaktywny'}}</mat-slide-toggle>
         <div>dni: {{selectedProgram.dni}}</div>    
-        <div>Ostatnio uruchomiony: {{selectedProgram.lastProgramRun}}</div>
+        <section class="program-section" >
+          <h4>Aktywny w dniach</h4>
+          <div class="row">
+            
+          <span *ngFor ="let d of dniTab; index as i">
+            <div class="column s10proc">
+              <mat-checkbox (change)="dniChange($event,d)" 
+               
+              [checked]="selectedProgram.dni.charAt(d.nr)=='1'" >
+                {{d.skrot}}</mat-checkbox>
+            </div>
+          </span>
+          </div>
+      
+        </section>
+        <section class="program-section" >
+          <h4>Godziny uruchomienia:</h4>       
+          <div class="row" style="margin:3px;" *ngFor="let p of selectedProgram.godziny">
+              <div class="column middle btn-light">
+                <div class="godzinaDiv">
+                  <fa-icon [icon]="faClock" size="2xl"></fa-icon>
+                 {{formatujGodzine(p)}}</div>
+                <button class="btn btn-danger" (click)="usunGodzine(p)">X Usuń</button>
+              </div>          
+          </div>
+        
+        <label class="label" for="godzina-h">Nowa godzina startu:</label>
+            <input id="godzina-h" [(ngModel)]="nowaGodzina" placeholder="godzina" type="number"
+            max="23" min="0">
+        <label class="label" for="godznia-m">h, min:</label>
+            <input id="godzina-m" [(ngModel)]="nowaMinuta" placeholder="minuta" type="number"
+            max="59" min="0" step="5" >
+        <button class="btn btn-success" (click)="dodajGodzine()">
+          + Dodaj
+      </button>
+      <hr>
+        </section>
       
         <button class="btn btn-success" [disabled]="!zmieniany" (click)="wyslijZmiany()" type="submit">Zapisz zmiany</button>
         <button class="btn btn-danger" [disabled]="!zmieniany" (click)="analujZmiany()" type="cancel">Anuluj</button>

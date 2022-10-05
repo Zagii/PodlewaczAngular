@@ -37,7 +37,7 @@ export interface System {
     dni: String // w jakich dniach tygodnia program jest uruchamiany 0-nd,1-pn, ..6-sb
     lastProgramRun?:number; //data w sekundach od ostatnio uruchomionego programu
     aktywny:boolean; // czy program jest aktywny
-    godzinyTab?:number[]; // zapis w formacie zulu hhmm
+    godziny:number[]; // zapis w formacie zulu hhmm
   }
   export interface Sekwencja {
     programId:number;

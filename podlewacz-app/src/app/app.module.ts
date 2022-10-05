@@ -53,9 +53,7 @@ import { ProgramyComponent } from './programy/programy.component';
     FontAwesomeModule,
     MaterialModule,
     FlexLayoutModule,
-    //HttpClientInMemoryWebApiModule.forRoot(
-  //    InMemoryDataService, { dataEncapsulation: false }
-    //)
+    //HttpClientInMemoryWebApiModule.forRoot(  InMemoryDataService, { dataEncapsulation: false }  )
   ],
   providers: [],
   bootstrap: [AppComponent]

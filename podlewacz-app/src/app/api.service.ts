@@ -15,7 +15,7 @@ const SET_SEKCJA="/set/sekcja";
 const DEL_SEKCJA="/del/sekcja";
 const GET_PROGRAMY="/get/programy";
 const SET_PROGRAM="/set/program";
-const DEL_PROGRAM=" /del/program";
+const DEL_PROGRAM="/del/program";
 const GET_SEKWENCJE="/get/sekwencje";    
 const SET_SEKWENCJA="/set/sekwencja";
 const DEL_SEKWENCJA="/del/sekwencja";
@@ -199,7 +199,7 @@ export class ApiService {
 
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', }), 
-      body: {id: program.programId },
+      body: {programId: program.programId },
     };
 
     console.log("usunProgram: "+JSON.stringify(program));

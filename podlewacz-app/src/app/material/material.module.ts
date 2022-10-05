@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatCheckbox, MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [],
@@ -20,6 +21,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MatListModule,
     MatRadioModule,
     MatSlideToggleModule,
+    MatCheckboxModule,
   ],
   exports: [
     MatTabsModule,
@@ -29,7 +31,8 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MatIconModule,
     MatListModule,
     MatRadioModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatCheckboxModule,
   ]
 })
 export class MaterialModule { }

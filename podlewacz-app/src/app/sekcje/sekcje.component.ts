@@ -90,7 +90,10 @@ export class SekcjeComponent implements OnInit {
     //post
     //this.selectedSekcja = JSON.parse(JSON.stringify(sekcja));
     if(this.selectedSekcja)
-      this.apiService.sendSekcje(this.selectedSekcja);
+      {
+        this.apiService.sendSekcje(this.selectedSekcja);
+        this.zmieniana=false;
+      }
     else
      console.log(this.selectedSekcja);
   }
