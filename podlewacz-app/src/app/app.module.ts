@@ -21,9 +21,18 @@ import { UstawieniaComponent } from './ustawienia/ustawienia.component';
 import { HarmonogramComponent } from './harmonogram/harmonogram.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-//import { InMemoryDataService } from './in-memory-data.service';
+import { InMemoryDataService } from './in-memory-data.service';
 import { SekcjeComponent } from './sekcje/sekcje.component';
 import { ProgramyComponent } from './programy/programy.component';
+import { SekwencjeComponent } from './sekwencje/sekwencje.component';
+import { Ng2GoogleChartsModule } from 'ng2-google-charts';
+import { NgxEchartsModule } from 'ngx-echarts';
+import { DialogSekwencjeComponent } from './dialog-sekwencje/dialog-sekwencje.component';
+import { KontrolkaCzasComponent } from './kontrolka-czas/kontrolka-czas.component';
+import { KontrolkaWykresComponent } from './kontrolka-wykres/kontrolka-wykres.component';
+//import * as echarts from 'echarts';
+
+
 
 @NgModule({
   declarations: [
@@ -40,6 +49,10 @@ import { ProgramyComponent } from './programy/programy.component';
     HarmonogramComponent,
     SekcjeComponent,
     ProgramyComponent,
+    SekwencjeComponent,
+    DialogSekwencjeComponent,
+    KontrolkaCzasComponent,
+    KontrolkaWykresComponent,
     
   ],
   imports: [
@@ -53,7 +66,11 @@ import { ProgramyComponent } from './programy/programy.component';
     FontAwesomeModule,
     MaterialModule,
     FlexLayoutModule,
-    //HttpClientInMemoryWebApiModule.forRoot(  InMemoryDataService, { dataEncapsulation: false }  )
+    HttpClientInMemoryWebApiModule.forRoot(  InMemoryDataService, { dataEncapsulation: false }  ),
+    Ng2GoogleChartsModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

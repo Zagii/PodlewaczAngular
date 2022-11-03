@@ -1,0 +1,55 @@
+<ng-content ></ng-content>
+<div class="kontrolkaCzasTytul">
+    {{tytul}} 
+</div>
+<div class="kontrolkeCzasPlus"></div>
+
+
+<div class="grid-container">
+    <div class="grid-item" >
+        <div *ngFor="let i of krokiTab; let ind=index;" >
+            <button *ngIf="ind<btnSzt" class="btn btn-circle btn-success" 
+            [disabled]="(isMinus?-sekundy:sekundy)+krokiTab[btnSzt-ind-1]*3600>maxSekund"
+                (click)="addGodz(krokiTab[btnSzt-ind-1])">+{{krokiTab[btnSzt-ind-1]}}</button>
+        </div>
+    </div>
+    <div class="grid-item" >
+        <div *ngFor="let i of krokiTab; let ind=index;" >
+            <button *ngIf="ind<btnSzt" class="btn btn-circle btn-success" 
+            [disabled]="(isMinus?-sekundy:sekundy)+krokiTab[btnSzt-ind-1]*60>maxSekund"
+                (click)="addMin(krokiTab[btnSzt-ind-1])">+{{krokiTab[btnSzt-ind-1]}}</button>
+        </div>
+    </div>
+    <div class="grid-item" >
+        <div *ngFor="let i of krokiTab; let ind=index;" >
+            <button *ngIf="ind<btnSzt" class="btn btn-circle btn-success" 
+            [disabled]="(isMinus?-sekundy:sekundy)+krokiTab[btnSzt-ind-1]>maxSekund"
+                (click)="addSek(krokiTab[btnSzt-ind-1])">+{{krokiTab[btnSzt-ind-1]}}</button>
+        </div>
+    </div>
+    <div class="grid-item-value"><span *ngIf="isMinus">-</span>{{ht}}</div>
+    <div class="grid-item-value">{{mt}}</div>
+    <div class="grid-item-value">{{st}}</div>  
+    <div class="grid-item" >
+        <div *ngFor="let i of krokiTab; let ind=index;" >
+            <button *ngIf="ind<btnSzt" class="btn btn-circle btn-danger" 
+            [disabled]="(isMinus?-sekundy:sekundy)-krokiTab[ind]*3600<minSekund"
+                (click)="addGodz(-krokiTab[ind])">-{{krokiTab[ind]}}</button>
+        </div>
+    </div>
+    <div class="grid-item" >
+        <div *ngFor="let i of krokiTab; let ind=index;" >
+            <button *ngIf="ind<btnSzt" class="btn btn-circle btn-danger" 
+            [disabled]="(isMinus?-sekundy:sekundy)-krokiTab[ind]*60<minSekund"
+                (click)="addMin(-krokiTab[ind])">-{{krokiTab[ind]}}</button>
+        </div>
+    </div>
+    <div class="grid-item" >
+        <div *ngFor="let i of krokiTab; let ind=index;" >
+            <button *ngIf="ind<btnSzt" class="btn btn-circle btn-danger" 
+            [disabled]="(isMinus?-sekundy:sekundy)-krokiTab[ind]<minSekund"
+                (click)="addSek(-krokiTab[ind])">-{{krokiTab[ind]}}</button>
+        </div>
+    </div>
+    
+  </div>

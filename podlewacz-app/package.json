@@ -27,7 +27,10 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "angular-in-memory-web-api": "^0.14.0",
+    "echarts": "^5.4.0",
+    "ng2-google-charts": "^7.0.0",
     "ngx-bootstrap": "^9.0.0",
+    "ngx-echarts": "^14.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

@@ -46,7 +46,7 @@ export interface System {
     akcja:boolean;
     czasTrwaniaAkcji:number; // gdy czas==0 akcja nie powoduje antyakcji
     startAkcji:number; //start akcji 
-    sekwencjaLastRun:number;
+    sekwencjaLastRun?:number;
   }
   
   export interface Stan {
@@ -54,4 +54,9 @@ export interface System {
     stan:boolean;
     autoSwitchActive:number;
     lastStateChanged:number;
+  }
+
+  export interface DialogData {
+    data: any;
+    result: any;
   }

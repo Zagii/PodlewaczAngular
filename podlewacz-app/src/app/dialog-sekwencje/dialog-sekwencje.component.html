@@ -1,0 +1,29 @@
+  <h1 mat-dialog-title>Edycja parametrów kroku {{data.data.sekwencjaId}}</h1>
+  <button mat-button (click)="onUsunClick()">Usuń krok</button>
+  <div mat-dialog-content>
+    <p>{{sekwencja.sekwencjaLastRun}}</p>
+      <mat-label>ProgramId: {{sekwencja.programId}}</mat-label>
+      
+      <mat-label>SekwencjaId: {{sekwencja.sekwencjaId}}</mat-label>
+      
+   
+      <mat-label>SekcjaID: </mat-label>
+      <input matInput [(ngModel)]="sekwencja.sekcjaId">
+ 
+      
+
+     
+  
+      <app-kontrolka-czas [tytul]="'Czas uruchomienia kroku'" [(sekundy)]="sekwencja.startAkcji" [btnSzt]="2"
+      [minSekund]="0" ></app-kontrolka-czas>
+
+  
+      <app-kontrolka-czas [tytul]="'Długość kroku'" [(sekundy)]="sekwencja.czasTrwaniaAkcji" [btnSzt]="2"
+      [minSekund]="0" ></app-kontrolka-czas>
+   
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Anuluj</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+  </div>
+

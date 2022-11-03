@@ -1,0 +1,33 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: #2196F3;
+    width: 150px;
+//    padding: 5px;
+  }
+  .grid-item {
+    //background-color: rgba(20, 224, 60, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 5px;
+  //  font-size: 15px;
+    text-align: center;
+
+  }
+  .grid-item-value {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 5px;
+    font-size: 15px;
+    text-align: center;
+    
+  }
+  
+  .btn-circle {
+    width: 25px;
+    height: 25px;
+    padding: 5px 3px;
+    margin: 3px;
+    border-radius: 50%;
+    font-size: 10px;
+    text-align: center;
+  }

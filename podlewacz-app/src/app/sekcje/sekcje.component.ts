@@ -13,6 +13,8 @@ export class SekcjeComponent implements OnInit {
   wybranyTyp?: any;
   sekcje: Sekcja[]=[];
   selectedSekcja?: Sekcja;
+
+
   constructor(private apiService:ApiService) { }
 
   ngOnInit(): void {
