@@ -1,6 +1,6 @@
 import { Component, Inject} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { DialogData, Sekwencja } from 'src/assets/typyObiektow';
+import { DialogData, Sekcja, Sekwencja } from 'src/assets/typyObiektow';
 import { SekwencjeComponent } from '../sekwencje/sekwencje.component';
 
 
@@ -13,6 +13,8 @@ import { SekwencjeComponent } from '../sekwencje/sekwencje.component';
 export class DialogSekwencjeComponent {
 
   sekwencja:Sekwencja;
+  sekcje:Sekcja[]=[];
+  programName: string="";
   constructor(
     public dialogRef: MatDialogRef<SekwencjeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
@@ -20,7 +22,9 @@ export class DialogSekwencjeComponent {
     data.result.ret="OK";
     console.log("dialog");
     console.log(data);
-    this.sekwencja=data.data;
+    this.sekwencja=data.data.sekwencja;
+    this.sekcje=data.data.sekcje;
+    this.programName=data.data.programName;
   }
 
   onNoClick(): void {
