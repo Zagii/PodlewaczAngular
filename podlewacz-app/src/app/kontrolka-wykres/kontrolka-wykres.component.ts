@@ -16,7 +16,19 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
     selectedID:any=-1;
   @Input()
     opcje: EChartsOption= {};
+  @Input()
+    odswiez:boolean=false;
+  @Output() odswiezChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   
+  krokiTab=[1,5,10,20];
+
+  changeOdswiez() {
+   // this.odswiez=false;
+    this.setupOptions();
+    console.log(this.dane);
+   // console.log("changeSekundy "+s);
+    this.odswiezChange.emit(this.odswiez);
+  }
   
   setupOptions()
   {
@@ -84,7 +96,8 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
   @Output() readonly clickAction: EventEmitter<unknown> = new EventEmitter<unknown>();
 
   ngOnChanges(a:any):void{
-   console.log("wkres onChanges");
+   console.log("wkres onChanges, odswiez: "+this.odswiez);
+   this.changeOdswiez();
    this.setupOptions();
   }
 

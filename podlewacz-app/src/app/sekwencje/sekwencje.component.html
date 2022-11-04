@@ -6,7 +6,7 @@
     <div class="column side">
         <mat-form-field appearance="fill">
             <mat-label>Wybierz program do konfigracji</mat-label>
-            <mat-select [(ngModel)]="selectedProgram" name="program">
+            <mat-select *ngIf="selectedProgram" [(ngModel)]="selectedProgram.programId" name="program">
                 <mat-option *ngFor="let s of programy" [value]="s.programId">
                 {{s.nazwa}}
                 </mat-option>
@@ -14,36 +14,40 @@
         </mat-form-field>
     </div>
     <div class="column reszta">
-        <button class="btn btn-success" [disabled]="!zmieniane" (click)="wyslijZmiany()" type="submit">Zapisz zmiany</button>
+  <!--      <button class="btn btn-success" [disabled]="!zmieniane" (click)="wyslijZmiany()" type="submit">Zapisz zmiany</button>
         <button class="btn btn-danger" [disabled]="!zmieniane" (click)="analujZmiany()" type="cancel">Anuluj</button>
+  -->
     </div>
 </div>
 <div class="row">
     <div class="column side">
-       
-        <button mat-raised-button (click)="openDialog()">Dodaj nowy krok</button>  
-        <div >
-            <button  mat-raised-button (click)="openDialog()">Edytuj krok</button>  
-            <button  mat-raised-button (click)="deleteSekwencja()">Usuń krok</button>  
-        </div>
+        <button class="btn btn-primary" (click)="openDialog(true)"><mat-icon>add</mat-icon></button>  
     </div>
    
-    <div class="column reszta" *ngIf="selectedSekwencja">
+    <div class="column polowa" *ngIf="selectedSekwencja">
         <h5> Wybrany krok programu {{selectedProgram?.nazwa}} <h6>(id: {{selectedProgram?.programId}})</h6></h5>
         sekwencjaId: {{ selectedSekwencja? selectedSekwencja.sekwencjaId:'brak'}} <br>
-        Sekcja: {{selectedSekwencja.sekcjaId}}, akcja: {{selectedSekwencja.akcja}} <br>
-        Start: {{selectedSekwencja.startAkcji}}, długość: {{selectedSekwencja.czasTrwaniaAkcji}},
-         koniec: {{selectedSekwencja.startAkcji+selectedSekwencja.czasTrwaniaAkcji}}<br>
+        Sekcja: {{dajNazweSekcji(selectedSekwencja)}}, <br>
+        Start: {{getTimeString(selectedSekwencja.startAkcji)}}, <br>
+        Długość: {{getTimeString(selectedSekwencja.czasTrwaniaAkcji)}},<br>
+        Koniec: {{getTimeString(selectedSekwencja.startAkcji+selectedSekwencja.czasTrwaniaAkcji)}}<br>
+    </div>
+    <div class="column reszta" *ngIf="!selectedSekwencja">
+        Wybierz z diagramu krok do edycji...
+    </div>
+    <div class="column reszta" *ngIf="selectedSekwencja">
+        <button   class="btn btn-info" (click)="openDialog()"><mat-icon>edit</mat-icon></button>  
+        <button  class="btn btn-danger" (click)="deleteSekwencja()"><mat-icon>delete</mat-icon></button>  
     </div>
 </div>
 <hr>
 
-<button class="btn btn-danger"  (click)="mojeData();aktualizujDane();" type="cancel">xxx</button>
+<button class="btn btn-danger"  (click)="odswiezWykres()" type="cancel">odswiez</button>
 
 <button class="btn btn-danger"  (click)="losuj()" >random</button>
 
 <app-kontrolka-wykres 
-
+[(odswiez)]="odswWykres"
 [nazwyY]="categories"
 [dane]="data"
 [selectedID]="selectedSekwencja? selectedSekwencja.sekwencjaId:-1"

@@ -16,7 +16,7 @@ export class InMemoryDataService implements InMemoryDbService {
       { sekcjaId: 5, nazwa: 'Sekcja 5', typ:0, pin:4 },
       { sekcjaId: 6, nazwa: 'Sekcja 6', typ:0, pin:5 },
       { sekcjaId: 7, nazwa: 'Sekcja 7', typ:0, pin:6 },
-      { sekcjaId: 7, nazwa: 'Sekcja 8', typ:0, pin:7 }
+      { sekcjaId: 8, nazwa: 'Sekcja 8', typ:0, pin:7 }
     ];
     const system =
       {ntpHost:'ntpHost', ntpOffset:-1, useNtp:1, lat:'12.3', lon:'55.322', mqttHost:'mqttHost',

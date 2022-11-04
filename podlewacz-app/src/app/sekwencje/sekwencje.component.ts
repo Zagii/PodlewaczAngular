@@ -50,7 +50,7 @@ export class SekwencjeComponent implements OnInit {
   sekwencje:Sekwencja[]=[];
   sekcje:Sekcja[]=[];
   zmieniane:boolean=false;
-
+  odswWykres=false;
   
     
 
@@ -89,7 +89,8 @@ losuj()
     itemStyle: {normal:{color:'#7b9cef'}}
   }            
   this.data.push(o);
-  this.categories=this.sekcje.map(x=> x.nazwa);
+ // this.categories=this.sekcje.map(x=> x.nazwa);
+ this.odswiezWykres();
   console.log("random");
   console.log(o);
 }
@@ -97,7 +98,7 @@ mojeData()
 {
   console.log("mojeData");
   let that=this;
- 
+  this.data=[];
  
   this.sekwencje.forEach( (s,index) =>
     {
@@ -108,7 +109,12 @@ mojeData()
           name: that.dajNazweSekcji(s),
           sekwencja:s,
                 //  sekcjaId, start, koniec, dlugosc , nazwa sekcji, sekwencjaId
-          value: [s.sekcjaId,s.startAkcji,(s.startAkcji+=s.czasTrwaniaAkcji),s.czasTrwaniaAkcji,that.dajNazweSekcji(s),s.sekwencjaId],
+          value: [s.sekcjaId,
+                  s.startAkcji,
+                  (s.startAkcji+s.czasTrwaniaAkcji),
+                  s.czasTrwaniaAkcji,
+                  that.dajNazweSekcji(s),
+                  s.sekwencjaId],
           itemStyle: {normal:{color:'#7b9cef'}}
         }            
         that.data.push(o);
@@ -116,7 +122,7 @@ mojeData()
     });
 
 
-  console.log(this.data)
+  console.log("mojeData ",this.data)
 }
 
 constructor(private apiService:ApiService,
@@ -148,18 +154,8 @@ constructor(private apiService:ApiService,
       {
         this.sekcje=p;    
         this.categories=this.sekcje.map(x=> x.nazwa);
-       // nazwy=nazwy.reverse();
-      /*  this.echartsIntance?.setOption(
-        {
-              yAxis:
-              {
-                data:nazwy,
-              }
-        });*/
         this.aktualizujDane();
-       // console.log(nazwy);
     });
-   // console.log(this.chartOption);
   }
  
   aktualizujDane()
@@ -193,11 +189,7 @@ constructor(private apiService:ApiService,
  
     this.zmieniane=true;
   }
-  analujZmiany()
-  {
-    this.apiService.getSekwencje();
-    this.zmieniane=false;
-  }
+  
   usunSekwencje()
   {
    if(confirm("Czy napewno chcesz usunąć krok z programu: "+this.selectedProgram?.nazwa)) 
@@ -223,7 +215,7 @@ constructor(private apiService:ApiService,
   }
   sekwencjaClick(klikSekwencja:Sekwencja)
   {
-    if(this.zmieniane)
+   /* if(this.zmieniane)
     {
       //zmieniono na inna sekwencje bez zapisywania
       if(this.selectedSekwencja?.sekwencjaId!=klikSekwencja.sekwencjaId)
@@ -246,10 +238,10 @@ constructor(private apiService:ApiService,
    console.log(this);
    
    this.aktualizujDane();
-   this.odswiez();
+   this.odswiez();*/
    //this.cdr.detectChanges();
   }
-  getTimeStrig(sekundy?:number):string
+  getTimeString(sekundy?:number):string
   {
     if(!sekundy) return "";
     let h:number=Math.floor(sekundy/3600);
@@ -270,20 +262,23 @@ constructor(private apiService:ApiService,
  
   odswiez()
   {
-    console.log("odswiez");
+ /*   console.log("odswiez");
     console.log(this);
-    this.cdr.detectChanges();
+    this.cdr.detectChanges();*/
   }
-  openDialog(sekwencja?:Sekwencja): void {
+  openDialog(czyNowa?:boolean): void {
+
+    if(!czyNowa)czyNowa=false;
     let sek;
-  //  console.log(this.selectedSekwencja);
-   /// if(!this.selectedProgram)return;
-    if(!this.selectedSekwencja)
+    
+    console.log("openDialog czyNowa: "+czyNowa, ", selectedSekwencja ", this.selectedSekwencja);
+ 
+    if(czyNowa)
     {
       // todo tworzenie nowej sekwecji, tymczasowo 0
       if(this.selectedProgram?.programId)
       {
-        
+        console.log("nie wybrano sekwencji wiec tworze nowa");
         sek={
           sekwencjaId:-1,
           programId:this.selectedProgram?.programId,
@@ -293,13 +288,21 @@ constructor(private apiService:ApiService,
           akcja:true,
 
         };
-      }
+      }else console.log("nie wybrano programu ERR");
     }else
     {
+      console.log("klonuje sekwencje do dialogbox");
       sek=JSON.parse(JSON.stringify(this.selectedSekwencja));
+
     }
   //  let sekwencja=this.sekwencje.find(x=>x.sekwencjaId==sekwencjaId);
-    let data:DialogData={data:sek,result:{parent:this}};
+    let data:DialogData={
+      data:{
+        sekwencja:sek,
+        sekcje:this.sekcje,
+        programName:this.selectedProgram?.nazwa
+      }
+      ,result:{parent:this}};
     console.log(data);
     
     const dialogRef = this.dialog.open(DialogSekwencjeComponent, {
@@ -308,25 +311,58 @@ constructor(private apiService:ApiService,
     });
    
     dialogRef.afterClosed().subscribe(r => {
-      console.log('The dialog was closed '+r.ret);
-      let rrr=r.result.ret;
+      console.log('The dialog was closed '+r.result.ret);
+     // let rrr=r.result.ret;
       console.log(r);
-      if(rrr=="OK")
+      switch(r.result.ret)
       {
-        console.log("fake dodaje")
-        this.sekwencje.push(r.data);
-        this.mojeData();
-        this.aktualizujDane();
-      }else console.log("ret: "+r.ret)
+       case "OK":
+          if(r.data.sekwencja.sekwencjaId==-1)
+          {
+            console.log("dialog OK dodaje")
+            r.data.sekwencja.sekwencjaId=this.getRandomInt(100,1000); //// <<<<<<<<<<<<<<<<<!!!!!!! usunac TODO
+            this.sekwencje.push(r.data.sekwencja);
+          }else
+          {
+            console.log("dialog OK edytuje");
+            let s=this.sekwencje.findIndex((x:Sekwencja)=>x.sekwencjaId===r.data.sekwencja.sekwencjaId);
+            if(s>=0)
+              {
+                console.log("dialog OK zmiana index: "+s);
+                this.sekwencje[s]=r.data.sekwencja;
+              }else
+              {
+                console.log("dialog OK blad findindex");
+              }
+          }
+          this.mojeData();
+          //this.aktualizujDane();
+          this.odswiezWykres();
+          break;
+        case "Cancel":
+          console.log("SWITCH cancel");
+          break;
+        case "Delete":
+          console.log("SWITCH delete");
+          this.analujZmiany();
+          break;
+        default:
+          console.log("SWITCH def");
+          break;
+
+      }
+      console.log("ret: "+r.result.ret)
     });
    
   }
-
-  anulujZmiany()
+  analujZmiany()
   {
+    console.log("anulujZminay");
     this.selectedSekwencja=undefined;
-    this.cdr.detectChanges();
+    this.apiService.getSekwencje();
+    this.zmieniane=false;
   }
+  
   deleteSekwencja()
   {
     if(this.selectedSekwencja && this.selectedProgram)
@@ -349,7 +385,15 @@ constructor(private apiService:ApiService,
   onChartClick(event:any): void {
     console.log('clicked value: ', event.data.sekwencja);
     this.selectedSekwencja=event.data.sekwencja;
-    this.openDialog(this.selectedSekwencja);
+    //this.selectedSekwencja=this.sekwencje.find((x:Sekwencja)=>x.sekwencjaId==event.data.sekwencja.sekwencjaId);
+ //   this.openDialog(false);
+  }
+
+  /* wymuszenie odswiezenia wykresu poprzez przekazanie wartosci do zmiennej kora nic nie robi
+  w ten sposob oszukuje angulara, brzydkie ale działa */
+  odswiezWykres()
+  {
+    this.odswWykres=!this.odswWykres;
   }
 
 }

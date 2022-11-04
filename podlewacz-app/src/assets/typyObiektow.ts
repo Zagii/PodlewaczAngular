@@ -59,4 +59,5 @@ export interface System {
   export interface DialogData {
     data: any;
     result: any;
+    
   }

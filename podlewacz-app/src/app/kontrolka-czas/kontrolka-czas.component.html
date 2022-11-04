@@ -27,9 +27,9 @@
                 (click)="addSek(krokiTab[btnSzt-ind-1])">+{{krokiTab[btnSzt-ind-1]}}</button>
         </div>
     </div>
-    <div class="grid-item-value"><span *ngIf="isMinus">-</span>{{ht}}</div>
-    <div class="grid-item-value">{{mt}}</div>
-    <div class="grid-item-value">{{st}}</div>  
+    <div class="grid-item-value"><span *ngIf="isMinus">-</span>{{ht}}h</div>
+    <div class="grid-item-value">{{mt}}m</div>
+    <div class="grid-item-value">{{st}}s</div>  
     <div class="grid-item" >
         <div *ngFor="let i of krokiTab; let ind=index;" >
             <button *ngIf="ind<btnSzt" class="btn btn-circle btn-danger" 

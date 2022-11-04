@@ -1,26 +1,29 @@
-  <h1 mat-dialog-title>Edycja parametrów kroku {{data.data.sekwencjaId}}</h1>
-  <button mat-button (click)="onUsunClick()">Usuń krok</button>
-  <div mat-dialog-content>
-    <p>{{sekwencja.sekwencjaLastRun}}</p>
-      <mat-label>ProgramId: {{sekwencja.programId}}</mat-label>
-      
-      <mat-label>SekwencjaId: {{sekwencja.sekwencjaId}}</mat-label>
-      
-   
-      <mat-label>SekcjaID: </mat-label>
-      <input matInput [(ngModel)]="sekwencja.sekcjaId">
+  <h1 mat-dialog-title>Edycja parametrów kroku {{sekwencja.sekwencjaId}}  <button class="btn btn-danger" (click)="onUsunClick()">Usuń krok <mat-icon>delete</mat-icon> </button></h1>
+  <h3> Program: {{programName}}</h3>
  
-      
-
-     
+  <div mat-dialog-content>
+    <p>Ostatnio aktywny: {{sekwencja.sekwencjaLastRun}}</p>  
+      <mat-form-field appearance="fill">
+        <mat-label>Sekcja</mat-label>
+        <mat-select [(ngModel)]="sekwencja.sekcjaId" name="sekcja">
+            <mat-option *ngFor="let s of sekcje" [value]="s.sekcjaId">
+            {{s.nazwa}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <hr>
+  <div class="row">
+      <div class="column polowa">
   
-      <app-kontrolka-czas [tytul]="'Czas uruchomienia kroku'" [(sekundy)]="sekwencja.startAkcji" [btnSzt]="2"
-      [minSekund]="0" ></app-kontrolka-czas>
+        <app-kontrolka-czas [tytul]="'Czas uruchomienia kroku'" [(sekundy)]="sekwencja.startAkcji" [btnSzt]="2"
+            [minSekund]="0" ></app-kontrolka-czas>
+      </div>
+     <div class="column reszta">
+        <app-kontrolka-czas [tytul]="'Długość kroku'" [(sekundy)]="sekwencja.czasTrwaniaAkcji" [btnSzt]="2"
+          [minSekund]="0" ></app-kontrolka-czas>
+    </div>
+  </div>
 
-  
-      <app-kontrolka-czas [tytul]="'Długość kroku'" [(sekundy)]="sekwencja.czasTrwaniaAkcji" [btnSzt]="2"
-      [minSekund]="0" ></app-kontrolka-czas>
-   
   </div>
   <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Anuluj</button>
