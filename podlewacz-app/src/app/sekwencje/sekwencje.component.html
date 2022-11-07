@@ -4,9 +4,11 @@
        <div class="labelDiv"> Program </div>
     </div>
     <div class="column side">
-        <mat-form-field appearance="fill">
-            <mat-label>Wybierz program do konfigracji</mat-label>
-            <mat-select *ngIf="selectedProgram" [(ngModel)]="selectedProgram.programId" name="program">
+      <mat-form-field appearance="fill"> 
+            
+            <mat-label>Wybierz program do konfigracji</mat-label> 
+            <mat-select *ngIf="selectedProgram" [ngModel]="selectedProgram.programId" name="program"
+            (selectionChange)="selectProgramChange($event.value)">
                 <mat-option *ngFor="let s of programy" [value]="s.programId">
                 {{s.nazwa}}
                 </mat-option>
@@ -21,7 +23,7 @@
 </div>
 <div class="row">
     <div class="column side">
-        <button class="btn btn-primary" (click)="openDialog(true)"><mat-icon>add</mat-icon></button>  
+        <button class="btn btn-primary" (click)="openDialog(true)"><mat-icon>add</mat-icon><br>nowy</button>  
     </div>
    
     <div class="column polowa" *ngIf="selectedSekwencja">
@@ -36,20 +38,22 @@
         Wybierz z diagramu krok do edycji...
     </div>
     <div class="column reszta" *ngIf="selectedSekwencja">
-        <button   class="btn btn-info" (click)="openDialog()"><mat-icon>edit</mat-icon></button>  
-        <button  class="btn btn-danger" (click)="deleteSekwencja()"><mat-icon>delete</mat-icon></button>  
+        <button   class="btn btn-info" (click)="openDialog()"><mat-icon>edit</mat-icon><br>edytuj</button>  
+        <button  class="btn btn-danger" (click)="deleteSekwencja()"><mat-icon>delete</mat-icon><br>usuń</button>  
     </div>
 </div>
 <hr>
-
+<!--
 <button class="btn btn-danger"  (click)="odswiezWykres()" type="cancel">odswiez</button>
 
 <button class="btn btn-danger"  (click)="losuj()" >random</button>
-
+-->
 <app-kontrolka-wykres 
 [(odswiez)]="odswWykres"
 [nazwyY]="categories"
 [dane]="data"
+[tytul]="'Przebieg programu'"
+[podTytul]="'Kolejne etapy podlewania'"
 [selectedID]="selectedSekwencja? selectedSekwencja.sekwencjaId:-1"
 (clickAction)="onChartClick($event)"
 ></app-kontrolka-wykres>
