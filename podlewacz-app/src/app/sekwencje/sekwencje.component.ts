@@ -88,6 +88,7 @@ losuj()
   console.log("random");
   console.log(o);
 }
+
 mojeData()
 {
   console.log("mojeData");
@@ -100,14 +101,18 @@ mojeData()
       {
         const o:any=
         {
-          name: that.dajNazweSekcji(s),
+        //  name: that.dajNazweSekcji(s),
+          tooltipTxt: that.dajNazweSekcji(s)+'<br> start w: '+ 
+                        that.apiService.getTimeStrig(s.startAkcji)+'<br> czas trwania: '+
+                        that.apiService.getTimeStrig(s.czasTrwaniaAkcji)+'<br> koniec w: '+
+                        that.apiService.getTimeStrig((s.startAkcji+s.czasTrwaniaAkcji)),
           sekwencja:s,
                 //  sekcjaId, start, koniec, dlugosc , nazwa sekcji, sekwencjaId
           value: [s.sekcjaId,
                   s.startAkcji,
                   (s.startAkcji+s.czasTrwaniaAkcji),
                   s.czasTrwaniaAkcji,
-                  that.dajNazweSekcji(s),
+                  that.apiService.getTimeStrig(s.czasTrwaniaAkcji),
                   s.sekwencjaId],
           itemStyle: {normal:{color:'#7b9cef'}}
         }            
@@ -359,6 +364,21 @@ constructor(private apiService:ApiService,
   odswiezWykres()
   {
     this.odswWykres=!this.odswWykres;
+  }
+  formatujOsX(val:any):any
+  {
+    let h:number=Math.floor(val/3600);
+  
+          let ht:string=h<10?"0"+h:h+"";
+          
+          let m:number=Math.floor((val%3600)/60)
+          let mt:string=m<10?"0"+m:""+m;
+          let s:number=Math.floor((val%60));
+          let st:string=s<10?"0"+s:""+s+"";
+          let str= ht+":"+mt+":"+st;
+          //console.log(h+", "+ht+", "+m+ ", "+mt+", "+s+", "+st+", "+str);
+          return /*Math.max(0, val) */ str+ ' s.';
+   
   }
   selectProgramChange(e:any)
   {

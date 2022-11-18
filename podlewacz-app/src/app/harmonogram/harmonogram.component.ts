@@ -12,12 +12,13 @@ export class HarmonogramComponent implements OnInit {
   selectedProgram?:Program;
   programy:Program[]=[];
 
-  dniTyg=["Pon","Wt","Śr","Czw","Pt","Sob","Nd"];
+ 
 
   data:any=[];
 
   constructor(private apiService:ApiService,) { }
 
+ 
   ngOnInit(): void {
     this.apiService.getProgramSubject().subscribe(p => 
       {
@@ -25,6 +26,7 @@ export class HarmonogramComponent implements OnInit {
         this.programy=p;
         this.selectedProgram=p[0];//JSON.parse(JSON.stringify(p[0]));
        
+        this.aktualizujData();
         
     });
   }
@@ -36,38 +38,74 @@ export class HarmonogramComponent implements OnInit {
   }
   onChartClick(e:any)
   {
-    console.log("onChartClick");
+    //console.log("onChartClick",e);
+    this.selectedProgram=this.programy.find(x=>x.programId=e.data.obiekt.programId);
+    this.odswiezWykres();
   }
-
-  mojeData()
+  getDniTyg():any[]
   {
-  console.log("mojeData");
+    return this.apiService.dniTyg;
+  }
+  dajGodzineStr(gInt:number):string
+  {
+    if(gInt>2400)gInt=0;
+    let g = (gInt/100<10)? "0"+(gInt/100)  : (gInt/100)+"" ;
+    let m = (gInt%100<10)? "0"+(gInt%100)  : (gInt%100)+"" ;
+    //+":"+gInt%100;
+    return g+":"+m;
+  }
+  formatujOsX(val:any):any
+  {
+   if(val>2400)val=0;
+   let g = (val/100<10)? "0"+(val/100)  : (val/100)+"" ;
+    let m = (val%100<10)? "0"+(val%100)  : (val%100)+"" ;
+   return  g+":"+m;
+   
+  }
+  aktualizujData()
+  {
+  console.log("aktualizujData");
   let that=this;
   this.data=[];
  
-  this.programy.forEach( (s,index) =>
+  this.programy.forEach( (p:Program,index) =>
     {
-      if(this.selectedProgram && s.programId==this.selectedProgram.programId)
-      {
-        const o:any=
+     // if(this.selectedProgram && p.programId==this.selectedProgram.programId)
+   //   {
+        for(let d=0;d<p.dni.length;d++)
         {
-//          name: that.dajNazweSekcji(s),
-          sekwencja:s,
-                //  sekcjaId, start, koniec, dlugosc , nazwa sekcji, sekwencjaId
-          value: [s.programId,
-                  s.godziny,
-                  //(s.startAkcji+s.czasTrwaniaAkcji),
-                  //s.czasTrwaniaAkcji,
-  //                that.dajNazweSekcji(s),
-                  //s.sekwencjaId
-                ],
-          //itemStyle: {normal:{color:'#7b9cef'}}
-        }            
-        that.data.push(o);
-      }
+          if(p.dni[d]=="1")
+          {
+            p.godziny.forEach(g =>
+              {
+               // let dlugosc=150; /// policzyc dlugosc <<<<<<<<<<<!!!!!!!!!!
+                const o:any=
+                {
+                  tooltipTxt: p.nazwa+'<br> start o: '+ 
+                              this.dajGodzineStr(g)+'<br> czas trwania: '+
+                              this.apiService.getTimeStrig(p.calkowityCzasTrwaniaProgramu)+'<br> dzień uruchomienia: '+
+                              this.apiService.dajNazweDnia(d),
+                  obiekt:p,
+                  dzien:this.apiService.dajPLIdDnia(d),
+                  godzina:g,
+                        //  sekcjaId, start, koniec, dlugosc , nazwa sekcji, sekwencjaId
+                  value: [this.apiService.dajPLIdDnia(d),
+                          g,
+                          g+(!p.calkowityCzasTrwaniaProgramu?0:p.calkowityCzasTrwaniaProgramu),
+                          p.calkowityCzasTrwaniaProgramu,
+                          p.nazwa,
+                          p.programId
+                        ],
+                  //itemStyle: {normal:{color:'#7b9cef'}}
+                }            
+                that.data.push(o);
+              });
+            }
+          }
+     // }
     });
 
 
-  console.log("mojeData ",this.data)
+  //console.log("aktualizujData ",this.data)
   }
 }

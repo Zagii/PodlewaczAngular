@@ -3,12 +3,14 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse  } from '@angu
 import { Observable, OperatorFunction, Subject, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { Config,Sekcja,System,Program,Sekwencja,Stan } from 'src/assets/typyObiektow';
+import { faTurkishLiraSign } from '@fortawesome/free-solid-svg-icons';
 
 
 
 const GET= "/get";
 const GET_SYSTEM="/get/system";
-const GET_STAN="/get/stan";
+const GET_STAN="/get/stany";
+const SET_STAN="/set/stan";
 const GET_SEKCJE="/get/sekcje";
 //const SET_SEKCJE="/set/sekcje";
 const SET_SEKCJA="/set/sekcja";
@@ -32,9 +34,20 @@ export class ApiService {
   
 
   
- 
+  public dniTyg=["Pon","Wt","Śr","Czw","Pt","Sob","Nd"];
 
-  
+  public dajZydIdDnia(d:number):number
+  {
+    return d==6? 0:d+1;
+  }
+  public dajPLIdDnia(d:number):number
+  {
+    return d==0? 6:d-1;
+  }
+  public dajNazweDnia(d:number):string
+  {
+    return this.dniTyg[this.dajPLIdDnia(d)];
+  }
   
   private sekcjeSubject: Subject<Sekcja[]> = new Subject<Sekcja[]>();
   private systemSubject: Subject<System> = new Subject<System>();
@@ -42,7 +55,8 @@ export class ApiService {
   private sekwencjaSubject: Subject<Sekwencja[]> = new Subject<Sekwencja[]>();
   private stanSubject: Subject<Stan[]> = new Subject<Stan[]>();
   
-
+  private programy:Program[]=[];
+  private sekwencje:Sekwencja[]=[];
   
 
   constructor(private http: HttpClient,
@@ -113,7 +127,7 @@ export class ApiService {
           
         });
     }
-    sendSekcje(sekcja:Sekcja): void {
+    setSekcja(sekcja:Sekcja): void {
       
       console.log("sendSekcje: "+JSON.stringify(sekcja));
       const options = {
@@ -164,6 +178,12 @@ export class ApiService {
       }); 
   }
   getProgramSubject():Subject<Program[]> {return this.programSubject;}
+  refreshProgram(p:Program[])
+  {
+    this.programy=p;
+    this.calcCalkowityCzasTrwaniaProgramow();
+    this.programSubject.next(p);
+  }
   getProgram(): void{
     console.log("getProgram: "+this.ipUrl+GET_PROGRAMY);
     this.http.get<Program[]>(this.ipUrl+GET_PROGRAMY)
@@ -173,7 +193,8 @@ export class ApiService {
     )
     .subscribe(s =>
       { 
-        this.programSubject.next(s);   
+        this.refreshProgram(s);
+        //this.programSubject.next(s);   
       }); 
   }
   sendProgram(program:Program): void {
@@ -191,7 +212,8 @@ export class ApiService {
     )
     .subscribe(program =>
       { 
-        this.programSubject.next(program);   
+        this.refreshProgram(program);
+        //this.programSubject.next(program);   
       });
   }
   deleteProgram(program:Program)
@@ -210,10 +232,23 @@ export class ApiService {
     )
     .subscribe(program =>
       { 
-        this.programSubject.next(program);   
+        this.refreshProgram(program);
+        //this.programSubject.next(program);   
       });
   }
+  
   getSekwencjeSubject():Subject<Sekwencja[]> {return this.sekwencjaSubject;}
+  refreshSekwencja(sek:Sekwencja[])
+  {
+    if(sek)
+    {
+      this.sekwencje=sek;
+      this.refreshProgram(this.programy);
+      this.sekwencjaSubject.next(sek);   
+    }
+    else
+      console.log("Brak sekwencji");
+  }
   getSekwencje(): void{
     console.log("getSekwencje: "+this.ipUrl+GET_SEKWENCJE);
     this.http.get<Sekwencja[]>(this.ipUrl+GET_SEKWENCJE)
@@ -223,16 +258,13 @@ export class ApiService {
     )
     .subscribe(s =>
       { 
-        if(s)
-         this.sekwencjaSubject.next(s);   
-       else
-       console.log("Brak sekwencji");
+       this.refreshSekwencja(s);
       }); 
   }
   getStanSubject():Subject<Stan[]> {return this.stanSubject;}
   getStan(): void{
     console.log("getStan: "+this.ipUrl+GET_STAN);
-    this.http.get<Stan[]>(this.ipUrl+GET_STAN,{params:{plain:"stan"}})
+    this.http.get<Stan[]>(this.ipUrl+GET_STAN/*,{params:{plain:"stan"}}*/)
     .pipe(
    //   retry(3), // retry a failed request up to 3 times
       catchError(this.handleError) // then handle the error
@@ -248,5 +280,68 @@ export class ApiService {
           console.log("brak stanow");
         }
       }); 
+  }
+  setStan(s:Stan):void{
+        
+    console.log("sendSekcje: "+JSON.stringify(s));
+    const options = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', }), 
+      body: {plain:s},
+    };
+   
+    this.http.post<Stan[]>(this.ipUrl+SET_STAN,s)
+    .pipe(
+ //     retry(3), // retry a failed request up to 3 times
+      catchError(this.handleError) // then handle the error
+    )
+    .subscribe(stan =>
+      { 
+        this.stanSubject.next(stan);   
+      });
+  }
+  getTimeStrig(sekundy?:number):string
+{
+  if(!sekundy) return "?";
+  let isMinus=false;
+  if(sekundy<0) isMinus=true;
+  
+  let h:number=Math.floor(sekundy/3600);
+  if(isMinus) h=Math.ceil(sekundy/3600);
+
+  let ht:string=Math.abs(h)<10?"0"+Math.abs(h):Math.abs(h)+"";
+  
+  let m:number=Math.floor((sekundy%3600)/60)
+  if(isMinus) m=Math.ceil((sekundy%3600)/60);
+
+  let mt:string=Math.abs(m)<10?"0"+Math.abs(m):""+Math.abs(m);
+
+  let s:number=Math.floor((sekundy%60));
+  s=Math.abs(s);
+  
+  let st:string=s<10?"0"+s:""+s+"";
+  let str= (isMinus?"-":"")+ ht+"h "+mt+"m "+st+"s ";
+  if(h==0)
+    str=(isMinus?"-":"")+ mt+"m "+st+"s";
+  if(h==0&&m==0)
+    str=(isMinus?"-":"")+ st+"s";
+  return str;
+}
+  calcCzasTrwaniaProgramu(p:Program):number
+  {
+    let sek=this.sekwencje.filter(s=>s.programId==p.programId);
+    //sek=sek.sort((a,b)=>a.startAkcji-b.startAkcji);
+    let czas=0;
+    sek.forEach(e => {
+      if(e.startAkcji+e.czasTrwaniaAkcji>czas)
+        czas=e.startAkcji+e.czasTrwaniaAkcji;
+    });
+    return czas;
+  }
+  calcCalkowityCzasTrwaniaProgramow()
+  {
+    this.programy.forEach(p => {
+      p.calkowityCzasTrwaniaProgramu=this.calcCzasTrwaniaProgramu(p);
+    });
+    console.log(this.programy);
   }
 }

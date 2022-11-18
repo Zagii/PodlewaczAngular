@@ -38,6 +38,7 @@ export interface System {
     lastProgramRun?:number; //data w sekundach od ostatnio uruchomionego programu
     aktywny:boolean; // czy program jest aktywny
     godziny:number[]; // zapis w formacie zulu hhmm
+    calkowityCzasTrwaniaProgramu?:number;
   }
   export interface Sekwencja {
     programId:number;

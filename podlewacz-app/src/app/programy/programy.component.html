@@ -1,3 +1,4 @@
+
 <div class="row">
     <div class="column polowa">
       <h2>Programy 
@@ -39,6 +40,7 @@
             </div>
             </div>
           </div>
+          Całkowity czas trwania programu: {{getCalkowityCzas()}}
           <hr>
           <h4>Status programu</h4>
         <mat-slide-toggle [(ngModel)]="selectedProgram.aktywny" (ngModelChange)="onChange($event)">{{selectedProgram.aktywny?'Aktywny':'Nieaktywny'}}</mat-slide-toggle>

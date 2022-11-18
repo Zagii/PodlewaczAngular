@@ -1,10 +1,11 @@
-<p>harmonogram works!</p>
+
 <app-kontrolka-wykres 
 [(odswiez)]="odswWykres"
-[nazwyY]="dniTyg"
+[nazwyY]="getDniTyg()"
 [dane]="data"
 [tytul]="'Harmonogram podlewania'"
 [podTytul]="'Planowane uruchomienia w rozkładzie tygodnia'"
 [selectedID]="selectedProgram? selectedProgram.programId:-1"
 (clickAction)="onChartClick($event)"
+[formatujOsX]="formatujOsX"
 ></app-kontrolka-wykres>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Sekcja } from 'src/assets/typyObiektow';
+//import { MaterialModule} from '../material/material.module';
+//import {MatSelectModule} from '@angular/material/select';
 
 @Component({
   selector: 'app-sekcje',
@@ -12,7 +14,7 @@ export class SekcjeComponent implements OnInit {
   typySekcji: string[] = ['Fizyczna', 'RestFull', 'Mqtt'];
   wybranyTyp?: any;
   sekcje: Sekcja[]=[];
-  selectedSekcja?: Sekcja;
+  selectedSekcja?: Sekcja=this.sekcje[0];
 
 
   constructor(private apiService:ApiService) { }
@@ -93,7 +95,7 @@ export class SekcjeComponent implements OnInit {
     //this.selectedSekcja = JSON.parse(JSON.stringify(sekcja));
     if(this.selectedSekcja)
       {
-        this.apiService.sendSekcje(this.selectedSekcja);
+        this.apiService.setSekcja(this.selectedSekcja);
         this.zmieniana=false;
       }
     else

@@ -30,6 +30,11 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { DialogSekwencjeComponent } from './dialog-sekwencje/dialog-sekwencje.component';
 import { KontrolkaCzasComponent } from './kontrolka-czas/kontrolka-czas.component';
 import { KontrolkaWykresComponent } from './kontrolka-wykres/kontrolka-wykres.component';
+import { SetupCzasComponent } from './setup-czas/setup-czas.component';
+import { SetupMeteoComponent } from './setup-meteo/setup-meteo.component';
+import { ProgramyMaualComponent } from './programy-maual/programy-maual.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 //import * as echarts from 'echarts';
 
 
@@ -53,6 +58,9 @@ import { KontrolkaWykresComponent } from './kontrolka-wykres/kontrolka-wykres.co
     DialogSekwencjeComponent,
     KontrolkaCzasComponent,
     KontrolkaWykresComponent,
+    SetupCzasComponent,
+    SetupMeteoComponent,
+    ProgramyMaualComponent,
     
   ],
   imports: [
@@ -70,6 +78,12 @@ import { KontrolkaWykresComponent } from './kontrolka-wykres/kontrolka-wykres.co
     Ng2GoogleChartsModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
     })
   ],
   providers: [],

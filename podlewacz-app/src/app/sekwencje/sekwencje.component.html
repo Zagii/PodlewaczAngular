@@ -33,6 +33,7 @@
         Start: {{getTimeString(selectedSekwencja.startAkcji)}}, <br>
         Długość: {{getTimeString(selectedSekwencja.czasTrwaniaAkcji)}},<br>
         Koniec: {{getTimeString(selectedSekwencja.startAkcji+selectedSekwencja.czasTrwaniaAkcji)}}<br>
+        Całkowity czas trwania programu: {{selectedProgram?.calkowityCzasTrwaniaProgramu}}
     </div>
     <div class="column reszta" *ngIf="!selectedSekwencja">
         Wybierz z diagramu krok do edycji...
@@ -56,6 +57,7 @@
 [podTytul]="'Kolejne etapy podlewania'"
 [selectedID]="selectedSekwencja? selectedSekwencja.sekwencjaId:-1"
 (clickAction)="onChartClick($event)"
+[formatujOsX]="formatujOsX"
 ></app-kontrolka-wykres>
 
 

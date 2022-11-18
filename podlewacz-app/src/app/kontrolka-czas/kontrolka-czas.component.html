@@ -3,8 +3,13 @@
     {{tytul}} 
 </div>
 <div class="kontrolkeCzasPlus"></div>
+<table>
 
-
+<td style="vertical-align: middle;">
+<span *ngIf="isMinus"><mat-icon>remove</mat-icon></span>
+        <span *ngIf="!isMinus"><mat-icon>add</mat-icon></span>
+    </td>
+    <td>
 <div class="grid-container">
     <div class="grid-item" >
         <div *ngFor="let i of krokiTab; let ind=index;" >
@@ -27,7 +32,8 @@
                 (click)="addSek(krokiTab[btnSzt-ind-1])">+{{krokiTab[btnSzt-ind-1]}}</button>
         </div>
     </div>
-    <div class="grid-item-value"><span *ngIf="isMinus">-</span>{{ht}}h</div>
+    <div class="grid-item-value">
+        {{ht}}h</div>
     <div class="grid-item-value">{{mt}}m</div>
     <div class="grid-item-value">{{st}}s</div>  
     <div class="grid-item" >
@@ -53,3 +59,5 @@
     </div>
     
   </div>
+</td>
+</table>

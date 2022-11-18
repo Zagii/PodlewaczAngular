@@ -43,11 +43,16 @@ export class InMemoryDataService implements InMemoryDbService {
       {programId:4,sekwencjaId:5, sekcjaId:0, akcja:true, czasTrwaniaAkcji:30, startAkcji:0, sekwencjaLastRun:0},
     ];
     const stany=[
-      {sekcjaId:0, stan:true},{sekcjaId:4, stan:true},{sekcjaId:8, stan:false},
-      {sekcjaId:1, stan:false},{sekcjaId:5, stan:true},
-      {sekcjaId:2, stan:true},{sekcjaId:6, stan:false},
-      {sekcjaId:3, stan:false},{sekcjaId:7, stan:true},
-    ]
+      {sekcjaId:0, stan:true, autoSwitchActive:0, lastStateChanged:0},
+      {sekcjaId:4, stan:true, autoSwitchActive:0, lastStateChanged:0},
+      {sekcjaId:8, stan:false, autoSwitchActive:0, lastStateChanged:0},
+      {sekcjaId:1, stan:false, autoSwitchActive:0, lastStateChanged:0},
+      {sekcjaId:5, stan:true, autoSwitchActive:0, lastStateChanged:0},
+      {sekcjaId:2, stan:true, autoSwitchActive:0, lastStateChanged:0},
+      {sekcjaId:6, stan:false, autoSwitchActive:0, lastStateChanged:0},
+      {sekcjaId:3, stan:false, autoSwitchActive:0, lastStateChanged:0},
+      {sekcjaId:7, stan:true, autoSwitchActive:0, lastStateChanged:0},
+    ];
 
     return {sekcje,system,programy,sekwencje,stany};
   }

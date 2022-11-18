@@ -65,7 +65,8 @@ export class ManualComponent implements OnInit,AfterViewInit{
   }
   czasToStr()
   {
-    let h,m,s;
+    return this.apiService.getTimeStrig(this.czas);
+   /* let h,m,s;
     let t=Math.floor(this.czas/3600);
     if(t<10)h='0'+t;
     else h=t;
@@ -78,6 +79,22 @@ export class ManualComponent implements OnInit,AfterViewInit{
     if(t<10)s='0'+t;
     else s=t;
 
-    return h+"h "+m+"min "+s+"sek"
+    return h+"h "+m+"min "+s+"sek"*/
+  }
+  klik(s:Sekcja)
+  {
+    console.log("Klik sekcja "+s.nazwa+": "+s.sekcjaId);
+    
+    let obecnyStan=this.stany.find(x=> x.sekcjaId== s.sekcjaId);
+
+
+    
+    let stan={
+      sekcjaId:obecnyStan? obecnyStan.sekcjaId:-1,
+      stan: obecnyStan? !obecnyStan.stan : true,
+      autoSwitchActive:this.czyNaCzas?this.czas:0,
+      lastStateChanged:0
+    };
+    this.apiService.setStan(stan);
   }
 }

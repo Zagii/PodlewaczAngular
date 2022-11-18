@@ -1,0 +1,38 @@
+<h1>Konfiguracja zegara systemowego</h1>
+Tryb manualny <mat-slide-toggle [(ngModel)]="czyAktywnyNTP" (ngModelChange)="onChange($event)">
+    automatyczny z serwera NTP: {{czyAktywnyNTP?'Aktywny':'Nieaktywny'}}
+</mat-slide-toggle>
+<div *ngIf="czyAktywnyNTP">
+    <h2>Tryb automatyczny</h2>
+    SerwerNTP: europe.pool.ntp.org <br>
+    port: domyślny <br>
+    data: <br>
+    dzień tygodnia: <br>
+    offset:  {{getOffsetStr()}} <br>
+    <app-kontrolka-czas [tytul]="'Strefa czasowa'" [(sekundy)]="offset" [btnSzt]="2"
+    [minSekund]="-43200"[maxSekund]="50400" ></app-kontrolka-czas>
+</div>
+<div *ngIf="!czyAktywnyNTP">
+    <h2>Tryb manualny</h2>
+    dzień tygonia:  
+    <mat-form-field appearance="fill"> 
+            
+        <mat-label>Wybierz program do konfigracji</mat-label> 
+        <mat-select [ngModel]="dzienTyg" name="czasDzienTyg"
+        (selectionChange)="onChange($event.value)">
+            <mat-option *ngFor="let s of dniTyg" [value]="dzienTyg">
+            {{s}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field> <br>
+    aktualny czas: {{getCzas()}}<br>
+
+    <app-kontrolka-czas [tytul]="'Ręcznie ustawiany czas systemowy'" [(sekundy)]="czasManual" [btnSzt]="2"
+    [minSekund]="0"[maxSekund]="86399" ></app-kontrolka-czas>
+</div>
+<hr>
+<button class="btn btn-success" [disabled]="!zmieniono" (click)="wyslijZmiany()" type="submit">Zapisz zmiany</button>
+<button class="btn btn-danger" [disabled]="!zmieniono" (click)="analujZmiany()" type="cancel">Anuluj</button>
+
+
+       

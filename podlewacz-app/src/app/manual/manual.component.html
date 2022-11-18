@@ -21,10 +21,10 @@
           </div>
 
           <div class="row" *ngIf="czyNaCzas">
-            <div class="column side">
+            <div class="column polowa">
               <div class="czasLbl" >{{czasToStr()}}</div>
             </div>
-            <div class="column s20proc">
+           <!-- <div class="column s20proc">
               <button class='btn btn-success btnCzas' (click)="changeCzas(5*60)">+5 min</button>
               <button class='btn btn-success btnCzas' (click)="changeCzas(60)">+1 min</button>
               <button class='btn btn-success btnCzas' (click)="changeCzas(10)">+10 sek</button>
@@ -35,16 +35,17 @@
               <button class='btn btn-danger btnCzas' (click)="changeCzas(-60)">-1 min</button>
               <button class='btn btn-danger btnCzas' (click)="changeCzas(-10)">-10 sek</button>
               <button class='btn btn-danger btnCzas' (click)="changeCzas(-1)">-1 sek</button>
-            </div>
+            </div> -->
             <div class="column reszta">
-              
+              <app-kontrolka-czas [tytul]="'Czas aktywności sekcji'" [(sekundy)]="czas" [btnSzt]="3"
+                   [minSekund]="1"[maxSekund]="50400" ></app-kontrolka-czas>
             </div>
             </div>
           
           <div class="row">
             <div class="column middle">
               <div  *ngFor="let s of sekcje"  class="sekcjaContainer">
-                <button [ngClass]="setBtnStyle(s)">
+                <button [ngClass]="setBtnStyle(s)" (click)="klik(s)">
                  <span>
                   <fa-icon [icon]="faShower" size="2xl"></fa-icon><BR>
                      {{s.nazwa}}
@@ -57,7 +58,7 @@
         </mat-tab>
         <mat-tab label="Programy"> 
           <div class="tabContainer">
-            <app-programy></app-programy>
+            <app-programy-maual></app-programy-maual>
           </div>
         </mat-tab>
       </mat-tab-group>

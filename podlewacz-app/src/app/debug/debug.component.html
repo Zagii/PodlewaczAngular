@@ -1,6 +1,6 @@
 
   <div class="row">
-    <div class="column middle">
+<!--    <div class="column middle">
       <h3>Sekcje</h3>
       <ul class="sekcje" >
         <li  *ngFor="let sekcja of sekcje">
@@ -12,13 +12,19 @@
       <h3>System</h3>
       {{system|json}}
     </div>
-
+-->
 
  <div class="column side">
   <button type="button" class="btn btn-info" (click)="get('system')"> getSystem</button>
+</div><div class="column side">
   <button type="button" class="btn btn-info" (click)="get('sekcje')"> getSekcje</button>
+</div><div class="column side">
   <button type="button" class="btn btn-info" (click)="get('programy')"> getProgramy</button>
-  <button type="button" class="btn btn-info" (click)="get('sekwencje')"> getSekwencje</button>
-  <button type="button" class="btn btn-info" (click)="get('stan')"> getStan</button>
-
+</div><div class="column side">
+<button type="button" class="btn btn-info" (click)="get('sekwencje')"> getSekwencje</button>
+</div><div class="column side">
+<button type="button" class="btn btn-info" (click)="get('stan')"> getStan</button>
 </div>
+ 
+</div>
+

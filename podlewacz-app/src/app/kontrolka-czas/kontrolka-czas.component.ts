@@ -51,28 +51,33 @@ export class KontrolkaCzasComponent implements OnInit, OnChanges {
   setLiczby(sekundy:number)
   {
    
-    if(this.isMinus)
-    {
-      //sekundy*=-1;
-    }
-    this.h=Math.floor(this.getH(sekundy)); 
-      this.ht= this.h<10 ? this.ht="0"+this.h : this.h+"";
-    this.m=Math.floor(this.getM(sekundy));
-      this.mt= this.m<10 ? this.mt="0"+this.m : this.m+"";
+    this.h=this.getH(sekundy); 
+    if(this.h<0)
+      this.h=Math.ceil(this.h);
+    else
+      this.h=Math.floor(this.h);
+    this.ht= Math.abs(this.h)<10 ? this.ht="0"+Math.abs(this.h) : Math.abs(this.h)+"";
+    
+    this.m=this.getM(sekundy);
+    if(this.m<0)
+      this.m=Math.ceil(this.m);
+    else
+      this.m=Math.floor(this.m);
+    this.mt= Math.abs(this.m)<10 ? this.mt="0"+Math.abs(this.m) : Math.abs(this.m)+"";
+ 
     this.s=Math.floor(this.getS(sekundy));
-      this.st= this.s<10 ? this.st="0"+this.s : this.s+"";
+      this.st= Math.abs(this.s)<10 ? this.st="0"+Math.abs(this.s) : Math.abs(this.s)+"";
+   //   console.log(this.h,this.m,this.s,this.sekundy,sekundy);
   }
 
   addSek(ile:number)
   {
-
-    let mnoznik=this.isMinus?-1:1;
   //  console.log("przed isminus:"+this.isMinus+" ile: "+ile+ " mnonik: "+mnoznik+", gtS: "+this.getSekundy());
-    let sekundy=mnoznik*this.getSekundy()+ ile;   
+    let sekundy=this.getSekundy()+ ile;   
     if(sekundy<this.minSekund)sekundy=this.minSekund;
     if(sekundy>this.maxSekund)sekundy=this.maxSekund;
     this.isMinus=(sekundy<0)?true:false;
-    sekundy=Math.abs(sekundy);
+    //sekundy=Math.abs(sekundy);
    // console.log("po isminus:"+this.isMinus+" sek: "+sekundy+ " mnonik: "+mnoznik);
 
     this.changeSekundy(sekundy);

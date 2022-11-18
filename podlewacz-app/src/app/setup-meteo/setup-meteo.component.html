@@ -1,0 +1,29 @@
+<h1>Konfiguracja ustawień prognozy pogody -- TODO</h1>
+Serwer pogody: acuweather.com <br>
+klucz API: xxx <br>
+ostatni request: {{dataOstatniegoRequestu}}<br>
+<hr>
+<h2> Współrzędne geograficzne instalacji</h2>
+lat: {{lat}}<br>
+long: {{long}} <br>
+ostatnia prognoza: {{ostatniaPrognozaPogody|json}} <br>
+aktualna korekta: {{korektaOpadow}} min od opadów 
++ {{korektaSuszy}} min od suszy = {{korektaOpadow+korektaSuszy}} min<br>
+<hr>
+<h3>Opady</h3>
+Minimalne prawdopodobieństwo uwzględniania opadów: {{minPrawdOpadow}}% <br>
+Suma opadu w mm/h: {{progOpadow}} [mm/h] <br>
+Korekta czasu podlewania względem wielkości opadu: {{krokKorektyOpadow}} min <br>
+<div class="alert alert-primary" role="alert">
+"Gdy prognoza przewiduje, że na {{minPrawdOpadow}}% będzie padać,
+ to na każdy {{progOpadow}} milimetr opadu zmniejsz czas podlewania o {{krokKorektyOpadow}} minutę."
+</div>
+<hr>
+<h3>Susza</h3>
+Poziom wilgotności ponżej którego uznajemy wystąpienie suszy: {{minPoziomWilgotnosci}}% <br>
+Minimalna średnia temperatura 24h suszy: {{minTempSuszy}}C <br>
+Korekta czasu podlewania względem suszy: {{krokKorektySuszy}} min/C <br>
+<div class="alert alert-primary" role="alert">
+"Gdy prognoza przewiduje, że wilgotność spadnie poniżej {{minPoziomWilgotnosci}}%, a średnia temperatura dobowa jest wyższa niż {{minTempSuszy}}C, 
+to na każdy stopień powyżej {{minTempSuszy}}C zmień czas podlewania o {{krokKorektySuszy}} min"
+</div>

@@ -152,7 +152,10 @@ export class ProgramyComponent implements OnInit {
     if(t<10)m='0'+t; else m=t;
     return h+':'+m;
   }
-
+  getCalkowityCzas():string
+  {
+    return this.apiService.getTimeStrig(this.selectedProgram?.calkowityCzasTrwaniaProgramu);
+  }
   dodajGodzine()
   {
     console.log("nowa godzina programu");

@@ -10,6 +10,8 @@ import { CustomSeriesRenderItemReturn, EChartsOption, graphic } from 'echarts';
 export class KontrolkaWykresComponent implements OnInit, OnChanges {
   @Input() 
     dane:any=[];
+  @Input()
+   formatujOsX:any;
   @Input() 
   nazwyY=["nazwa1","nazwa2","nazwa3"];
   @Input()
@@ -29,22 +31,27 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
   changeOdswiez() {
    // this.odswiez=false;
     this.setupOptions();
-    console.log(this.dane);
+   // console.log(this.dane);
    // console.log("changeSekundy "+s);
     this.odswiezChange.emit(this.odswiez);
   }
   
   setupOptions()
   {
+   let that=this;
    this.opcje= {
     tooltip: {
         formatter: function (params:any) {
-          let nazwaSekcji=params.name;
+          //let txt=params.tooltipTxt;
+          /*let nazwaSekcji=params.name;
           let start=params.value[1];
           let dlugosc=params.value[3];
+          let opis=params.value[4];
           let marker=params.marker;
-        //  console.log(params.value);
-          return  marker+nazwaSekcji+'<br> start: '+start+'<br> czas trwania: '+dlugosc+'<br> koniec o: '+(start+dlugosc);
+          return  marker+nazwaSekcji+'<br> '+opis+'<br> start: '+start+'<br> czas trwania: '+dlugosc+'<br> koniec o: '+(start+dlugosc);
+          */
+  
+          return params.marker+params.data.tooltipTxt;
           ;
         }
     },
@@ -63,18 +70,13 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
       scale: true,
       axisLabel: {
         formatter: function (val:any) {
+           if(!that.formatujOsX)
+           {
+            return val;
+           }
+           return that.formatujOsX(val);
       //    console.log(val);
-          let h:number=Math.floor(val/3600);
-  
-          let ht:string=h<10?"0"+h:h+"";
-          
-          let m:number=Math.floor((val%3600)/60)
-          let mt:string=m<10?"0"+m:""+m;
-          let s:number=Math.floor((val%60));
-          let st:string=s<10?"0"+s:""+s+"";
-          let str= ht+":"+mt+":"+st;
-          //console.log(h+", "+ht+", "+m+ ", "+mt+", "+s+", "+st+", "+str);
-          return /*Math.max(0, val) */ str+ ' s.';
+         
         }
         
         
@@ -123,6 +125,7 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
     var start = api.coord([api.value(1), obiektIndex]);
     var end = api.coord([api.value(2), obiektIndex]);
     var dlugosc= api.value(3);
+    var opis = api.value(4);
     var obiektId= api.value(5);
     var height = api.size([0, 1])[1] * 0.6;
     //console.log("sekcjaIndex: "+api.value(0)+", start: "+api.value(1)+", end: "+api.value(2)+", dlugosc: "+dlugosc+", height: "+height+" sekcja: "+api.value(4));
@@ -145,7 +148,7 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
   {
      styl.fill='#ff0000';
   }
-
+/*
   let h:number=Math.floor(dlugosc/3600);
 
     let ht:string=h<10?"0"+h:h+"";
@@ -159,8 +162,8 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
       str= mt+"min "+st+"sek";
     if(h==0&&m==0)
       str= st+"sek";
-
-  styl.text=str;//this.getTimeStrig(dlugosc);
+*/
+  styl.text=opis;//str;//this.getTimeStrig(dlugosc);
     let ret:CustomSeriesRenderItemReturn =  rectShape && {
       type: 'rect',
       shape: rectShape,
@@ -170,22 +173,5 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
   
   return ret;
   }
-  getTimeStrig(sekundy?:number):string
-  {
-    if(!sekundy) return "?";
-    let h:number=Math.floor(sekundy/3600);
-
-    let ht:string=h<10?"0"+h:h+"";
-    
-    let m:number=Math.floor((sekundy%3600)/60)
-    let mt:string=m<10?"0"+m:""+m;
-    let s:number=Math.floor((sekundy%60));
-    let st:string=s<10?"0"+s:""+s+"";
-    let str= ht+":"+mt+":"+st;
-    if(h==0)
-      str= mt+"min "+st+"sek";
-    if(h==0&&m==0)
-      str= st+"sek";
-    return str;
-  }
+ 
 }
