@@ -1,18 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { GoogleChartInterface, GoogleChartType } from 'ng2-google-charts';
+import { Component, OnInit} from '@angular/core';
 import { DialogData, Program, Sekcja, Sekwencja } from 'src/assets/typyObiektow';
 import { ApiService } from '../api.service';
 
-import { EChartsOption, ECharts, CustomSeriesRenderItemReturn, graphic, color } from 'echarts';
-import { OverlayOutsideClickDispatcher } from '@angular/cdk/overlay';
+
 import { MatDialog } from '@angular/material/dialog';
 import { DialogSekwencjeComponent } from '../dialog-sekwencje/dialog-sekwencje.component';
 import {  ChangeDetectorRef } from '@angular/core';
-import { JsonPipe } from '@angular/common';
-import { reduce } from 'rxjs';
 
-
-//import * as echarts from 'echarts/types/dist/echarts';
 
 @Component({
   selector: 'app-sekwencje',
@@ -129,7 +123,8 @@ constructor(private apiService:ApiService,
     public dialog: MatDialog,
     private cdr: ChangeDetectorRef
     ) {
- this.mojeData();
+    
+      this.aktualizujDane();
   }
   ngOnInit(): void {
     this.apiService.getProgramSubject().subscribe(p => 
@@ -144,10 +139,7 @@ constructor(private apiService:ApiService,
       {
         this.data=[];
         this.sekwencje=p;    
-        //this.chart.columnNames  
-      this.mojeData();
-      //this.makeData();
-      this.aktualizujDane();
+        this.aktualizujDane();
        
     });
     this.apiService.getSekcjeSubject().subscribe(p => 
@@ -161,6 +153,7 @@ constructor(private apiService:ApiService,
   aktualizujDane()
   {
     console.log("aktualizuje dane");
+    this.mojeData();
    // console.log("liczba sekwencji: "+this.sekwencje.length);
    // console.log("liczba data: "+this.data.length);
   
@@ -182,10 +175,6 @@ constructor(private apiService:ApiService,
 
       }
     }
-    /*let nowaSekwencja: Sekwencja={
-      programId:this.selectedProgram?.programId;
-           
-    };*/
  
     this.zmieniane=true;
   }
@@ -213,34 +202,7 @@ constructor(private apiService:ApiService,
     else
      console.log(this.selectedProgram);
   }
-  sekwencjaClick(klikSekwencja:Sekwencja)
-  {
-   /* if(this.zmieniane)
-    {
-      //zmieniono na inna sekwencje bez zapisywania
-      if(this.selectedSekwencja?.sekwencjaId!=klikSekwencja.sekwencjaId)
-      {
-        if(confirm("Nie zapiano zmian w modfikowanym kroku, czy chcesz to zrobić teraz?")) {
-          console.log("zapis post");
-          //TODO usun sekwencje
-          this.zmieniane=false;
-        }else
-        {
-          console.log("anuluj klik diagram");
-          //anuluj zmiany
-          this.analujZmiany();
-        }
-      }
-    }
-
-    this.selectedSekwencja=klikSekwencja;
-    console.log("timeout klik:"+  this.selectedSekwencja?.sekwencjaId);
-   console.log(this);
-   
-   this.aktualizujDane();
-   this.odswiez();*/
-   //this.cdr.detectChanges();
-  }
+  
   getTimeString(sekundy?:number):string
   {
     if(!sekundy) return "";
@@ -259,13 +221,7 @@ constructor(private apiService:ApiService,
       str= st+"sek";
     return str;
   }
- 
-  odswiez()
-  {
- /*   console.log("odswiez");
-    console.log(this);
-    this.cdr.detectChanges();*/
-  }
+
   openDialog(czyNowa?:boolean): void {
 
     if(!czyNowa)czyNowa=false;
@@ -313,10 +269,19 @@ constructor(private apiService:ApiService,
     dialogRef.afterClosed().subscribe(r => {
       console.log('The dialog was closed '+r.result.ret);
      // let rrr=r.result.ret;
-      console.log(r);
+   //   console.log(r);
       switch(r.result.ret)
       {
        case "OK":
+          if(this.validateSekwencja(r.data.sekwencja))
+          {
+            console.log("walidacja OK");
+          }else
+          {
+            alert("Modyfikowany krok koliduje z wcześniejszymi krokami. Krok nie zostanie zapisany");
+            console.log("walidacja nie OK");
+            return;
+          }
           if(r.data.sekwencja.sekwencjaId==-1)
           {
             console.log("dialog OK dodaje")
@@ -335,8 +300,8 @@ constructor(private apiService:ApiService,
                 console.log("dialog OK blad findindex");
               }
           }
-          this.mojeData();
-          //this.aktualizujDane();
+        
+          this.aktualizujDane();
           this.odswiezWykres();
           break;
         case "Cancel":
@@ -395,7 +360,30 @@ constructor(private apiService:ApiService,
   {
     this.odswWykres=!this.odswWykres;
   }
+  selectProgramChange(e:any)
+  {
+    console.log("selectProgramChange ",e);
+    this.selectedProgram=this.programy.find(x=>x.programId==e);
+    this.aktualizujDane();
+  }
 
+  validateSekwencja(s:Sekwencja) :boolean
+  {
+    let ret=true;
+    let tab=this.sekwencje.filter(x=>(x.programId==s.programId && x.sekcjaId==s.sekcjaId && x.sekwencjaId!=s.sekwencjaId));
+    tab.push(s);
+    tab = tab.sort((a,b)=> a.startAkcji - b.startAkcji);
+    console.log(tab);
+    for(let i=0;i<tab.length-1;i++)
+    {
+      if(tab[i].startAkcji+tab[i].czasTrwaniaAkcji>=tab[i+1].startAkcji)
+      {
+        console.log("nacodząca sekwencja: "+tab[i].sekwencjaId+" na sekwencje: "+tab[i+1].sekwencjaId);
+        ret=false;
+      }
+    }
+    return ret;
+  }
 }
 
 

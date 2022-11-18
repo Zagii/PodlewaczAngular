@@ -1,1 +1,10 @@
 <p>harmonogram works!</p>
+<app-kontrolka-wykres 
+[(odswiez)]="odswWykres"
+[nazwyY]="dniTyg"
+[dane]="data"
+[tytul]="'Harmonogram podlewania'"
+[podTytul]="'Planowane uruchomienia w rozkładzie tygodnia'"
+[selectedID]="selectedProgram? selectedProgram.programId:-1"
+(clickAction)="onChartClick($event)"
+></app-kontrolka-wykres>

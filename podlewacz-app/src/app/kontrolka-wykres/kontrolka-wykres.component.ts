@@ -17,6 +17,10 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
   @Input()
     opcje: EChartsOption= {};
   @Input()
+    tytul:string="Tytuł";
+  @Input()
+    podTytul:string="podTytuł";
+  @Input()
     odswiez:boolean=false;
   @Output() odswiezChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   
@@ -46,8 +50,8 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
     },
     
     title: {
-      text: 'Przebieg programu',
-      subtext: 'Kolejne etapy podlewania',
+      text: this.tytul,
+      subtext: this.podTytul,
       left: 'center'
     },
    
@@ -115,11 +119,11 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
        
     //      console.log("params: "+ JSON.stringify(params));
       
-    var sekcjaIndex = api.value(0);
-    var start = api.coord([api.value(1), sekcjaIndex]);
-    var end = api.coord([api.value(2), sekcjaIndex]);
+    var obiektIndex = api.value(0);
+    var start = api.coord([api.value(1), obiektIndex]);
+    var end = api.coord([api.value(2), obiektIndex]);
     var dlugosc= api.value(3);
-    var sekwencjaId= api.value(5);
+    var obiektId= api.value(5);
     var height = api.size([0, 1])[1] * 0.6;
     //console.log("sekcjaIndex: "+api.value(0)+", start: "+api.value(1)+", end: "+api.value(2)+", dlugosc: "+dlugosc+", height: "+height+" sekcja: "+api.value(4));
    // console.log("sekcjaIndex: "+sekcjaIndex+", start: "+start+", end: "+end+", height: "+height+" sekcja: "+api.value(4));
@@ -137,7 +141,7 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
     },
     );
   var styl=api.style();
-  if(sekwencjaId==this.selectedID)
+  if(obiektId==this.selectedID)
   {
      styl.fill='#ff0000';
   }

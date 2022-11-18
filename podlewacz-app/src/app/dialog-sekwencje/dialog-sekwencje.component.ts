@@ -20,8 +20,8 @@ export class DialogSekwencjeComponent {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {
     data.result.ret="OK";
-    console.log("dialog");
-    console.log(data);
+ //   console.log("dialog");
+   // console.log(data);
     this.sekwencja=data.data.sekwencja;
     this.sekcje=data.data.sekcje;
     this.programName=data.data.programName;
