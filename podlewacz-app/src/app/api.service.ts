@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse  } from '@angular/common/http';
 import { Observable, OperatorFunction, Subject, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-import { Config,Sekcja,System,Program,Sekwencja,Stan } from 'src/assets/typyObiektow';
+import { Config,Sekcja,System,Program,Sekwencja,Stan, StanSet, StanAll } from 'src/assets/typyObiektow';
 import { faTurkishLiraSign } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -32,8 +32,11 @@ export class ApiService {
   
   private ipUrl=""; // = "http://192.168.1.179"; //'api';//'192.168.4.1';
   
+  public czyAutoStan=false;
+  public rateAutostan=1;
+  timer:any;
 
-  
+
   public dniTyg=["Pon","Wt","Śr","Czw","Pt","Sob","Nd"];
 
   public dajZydIdDnia(d:number):number
@@ -53,11 +56,13 @@ export class ApiService {
   private systemSubject: Subject<System> = new Subject<System>();
   private programSubject: Subject<Program[]> = new Subject<Program[]>();
   private sekwencjaSubject: Subject<Sekwencja[]> = new Subject<Sekwencja[]>();
-  private stanSubject: Subject<Stan[]> = new Subject<Stan[]>();
+  private stanSubject: Subject<StanAll> = new Subject<StanAll>();
   
   private programy:Program[]=[];
   private sekwencje:Sekwencja[]=[];
   
+  public sekcje:Sekcja[]=[];
+  public system?:System;
 
   constructor(private http: HttpClient,
     
@@ -71,8 +76,23 @@ export class ApiService {
       this.getProgram();
       this.getSekwencje();
       this.getStan();
+      this.uruchomAutoStan(this.czyAutoStan,this.rateAutostan);
   }
   
+  uruchomAutoStan(czyAktywny:boolean,interwal:number)
+  {
+    this.czyAutoStan=czyAktywny;
+    this.rateAutostan=interwal;
+    console.log("AutoStan stop")
+    if(this.timer)
+      clearInterval(this.timer); 
+    
+    if(czyAktywny)  
+    {
+      console.log("AutoStan start: ",interwal);
+      this.timer= setInterval(()=>{ this.getStan();},interwal*1000);
+    }
+  }
   getConfig() {
 
       return this.http.get<Config>(CONFIG_URL)
@@ -122,6 +142,7 @@ export class ApiService {
           console.log("Sekcje: "+JSON.stringify(sekcje));
           if(sekcje!=undefined)
           {
+            this.sekcje=sekcje;
             this.sekcjeSubject.next(sekcje);   
           }
           
@@ -142,6 +163,7 @@ export class ApiService {
       )
       .subscribe(sekcje =>
         { 
+          this.sekcje=sekcje;
           this.sekcjeSubject.next(sekcje);   
         });
     }
@@ -174,6 +196,7 @@ export class ApiService {
     )
     .subscribe(s =>
       { 
+        this.system=s;
         this.systemSubject.next(s);   
       }); 
   }
@@ -261,10 +284,51 @@ export class ApiService {
        this.refreshSekwencja(s);
       }); 
   }
-  getStanSubject():Subject<Stan[]> {return this.stanSubject;}
+  sendSekwencja(sekw:Sekwencja)
+  {
+    console.log("sendSekwencja: "+JSON.stringify(sekw));
+    const options = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', }), 
+      body: {plain:sekw},
+    };
+    let req= this.http.put<Sekwencja[]>(this.ipUrl+SET_SEKWENCJA,sekw);
+    if(sekw.sekwencjaId<0)
+      req= this.http.post<Sekwencja[]>(this.ipUrl+SET_SEKWENCJA,sekw);
+    
+    req  
+    .pipe(
+ //     retry(3), // retry a failed request up to 3 times
+      catchError(this.handleError) // then handle the error
+    )
+    .subscribe(s =>
+      { 
+        this.refreshSekwencja(s); 
+      });
+  }
+  deleteSekwencja(sekwencjaId:number)
+  {
+
+    const options = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', }), 
+      body: {sekwencjaId: sekwencjaId },
+    };
+
+    console.log("usunSekwencje: "+JSON.stringify(sekwencjaId));
+    this.http.delete<Sekwencja[]>(this.ipUrl+DEL_SEKWENCJA,options)
+    .pipe(
+  //    retry(3), // retry a failed request up to 3 times
+      catchError(this.handleError) // then handle the error
+    )
+    .subscribe(s =>
+      { 
+        this.refreshSekwencja(s); 
+        //this.programSubject.next(program);   
+      });
+  }
+  getStanSubject():Subject<StanAll> {return this.stanSubject;}
   getStan(): void{
     console.log("getStan: "+this.ipUrl+GET_STAN);
-    this.http.get<Stan[]>(this.ipUrl+GET_STAN/*,{params:{plain:"stan"}}*/)
+    this.http.get<StanAll>(this.ipUrl+GET_STAN/*,{params:{plain:"stan"}}*/)
     .pipe(
    //   retry(3), // retry a failed request up to 3 times
       catchError(this.handleError) // then handle the error
@@ -273,35 +337,61 @@ export class ApiService {
       { 
         if(s)
         {
-          s=s.sort((a,b)=>a.sekcjaId-b.sekcjaId);
+          s.sekcje=s.sekcje.sort((a,b)=>a.sekcjaId-b.sekcjaId);
           this.stanSubject.next(s);   
+          
         }else
         {
           console.log("brak stanow");
         }
       }); 
   }
-  setStan(s:Stan):void{
+  setStan(stan:StanSet):void{
         
-    console.log("sendSekcje: "+JSON.stringify(s));
+    console.log("sendSekcje: "+JSON.stringify(stan));
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', }), 
-      body: {plain:s},
+    //  body: {plain:stan}
     };
-   
-    this.http.post<Stan[]>(this.ipUrl+SET_STAN,s)
+       
+    this.http.post<StanAll>(this.ipUrl+SET_STAN,stan,options)
     .pipe(
  //     retry(3), // retry a failed request up to 3 times
       catchError(this.handleError) // then handle the error
     )
     .subscribe(stan =>
       { 
+        console.log(stan)
+        stan.sekcje=stan.sekcje.sort((a,b)=>a.sekcjaId-b.sekcjaId);
         this.stanSubject.next(stan);   
       });
   }
+
+  startProgram(programId:number,korekta:number)
+  {
+    console.log("startProgram: "+programId,korekta);
+    const options = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json', }), 
+    };
+    const  body= {
+        programId:programId,
+        korekta:korekta
+      };
+   
+    this.http.post<any>(this.ipUrl+START_PROGRAM,body,options) 
+    .pipe(
+ //     retry(3), // retry a failed request up to 3 times
+      catchError(this.handleError) // then handle the error
+    )
+    .subscribe(s =>
+      { 
+        //this.refreshSekwencja(s); 
+      });
+  }
+
   getTimeStrig(sekundy?:number):string
 {
-  if(!sekundy) return "?";
+  if(sekundy==undefined) return "?";
   let isMinus=false;
   if(sekundy<0) isMinus=true;
   

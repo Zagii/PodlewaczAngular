@@ -4,23 +4,23 @@
       
     </div>
     
-    <mat-tab-group >
+    <mat-tab-group (selectedTabChange)="tabSelectedTabChange($event)">
       <mat-tab label="Sekcje">
         <div class="tabContainer">
-          <app-sekcje></app-sekcje>  
+          <app-sekcje [tab]="wybranyTab"></app-sekcje>  
         </div>
       </mat-tab>
-      <mat-tab label="Programy">
+     <mat-tab label="Programy">
         <div class="tabContainer">
           <app-programy></app-programy>  
         </div>
       </mat-tab>
-      <mat-tab label="Kroki programów">
+       <mat-tab label="Kroki programów">
         <div class="tabContainer">
           <app-sekwencje></app-sekwencje>  
         </div>
       </mat-tab>
-      <mat-tab label="Czas/Geo">
+  <!--    <mat-tab label="Czas/Geo">
         <app-setup-czas></app-setup-czas>
         </mat-tab>
         <mat-tab label="Meteo">
@@ -37,5 +37,5 @@
             <p>WiFi SSID:</p>
             <p>WiFi IP:</p> 
           </mat-tab>
-    </mat-tab-group>
+        -->    </mat-tab-group>
 </section>

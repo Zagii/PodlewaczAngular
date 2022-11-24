@@ -27,4 +27,10 @@
 </div>
  
 </div>
+<div class="row">
+  <mat-slide-toggle [(ngModel)]="czyAutoStan" (change)="zmianaAutoStan($event)">AutoStan {{ czyAutoStan? 'Tak':'Nie'}} </mat-slide-toggle>
+
+  <input id="rate" [(ngModel)]="rate"  (ngModelChange)="zmianaAutoStan($event)" placeholder="rate"/>
+          
+</div>
 

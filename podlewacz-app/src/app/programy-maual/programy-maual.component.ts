@@ -134,8 +134,12 @@ dajNazweSekcji(s:Sekwencja):String
   }
   start()
   {
-    this.progUruchomiony=true;
-  }
+    if(this.selectedProgram)
+    {
+      const i=this.selectedProgram.programId ? this.selectedProgram.programId :-1;
+      this.progUruchomiony=true;
+    this.apiService.startProgram(i,this.predkoscProgramu)
+  }}
   stop()
   {
     this.progUruchomiony=false;

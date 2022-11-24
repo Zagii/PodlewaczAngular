@@ -49,14 +49,24 @@ export interface System {
     startAkcji:number; //start akcji 
     sekwencjaLastRun?:number;
   }
-  
+  export interface StanAll {
+  rtc:number;
+  ntp:number;
+  upT:number; //millis od restartu 
+  sekcje:Stan[];
+  }
   export interface Stan {
     sekcjaId:number;
     stan:boolean;
     autoSwitchActive:number;
     lastStateChanged:number;
+    timeToSwitch:number;
   }
-
+  export interface StanSet {
+    sekcjaId:number;
+    stan:number;
+    czas?:number;
+  }
   export interface DialogData {
     data: any;
     result: any;

@@ -1,6 +1,6 @@
 import {  AfterViewInit, Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
-import { Program, Sekcja,Stan } from 'src/assets/typyObiektow';
+import { Program, Sekcja,Stan, StanAll, StanSet } from 'src/assets/typyObiektow';
 import { faShower,faClock } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -12,11 +12,13 @@ import { faShower,faClock } from '@fortawesome/free-solid-svg-icons';
 export class ManualComponent implements OnInit,AfterViewInit{
   faShower = faShower;faClock=faClock;
   sekcje: Sekcja[]=[];
-  stany: Stan[]=[];
+  stanAll? : StanAll;
+ // stany: Stan[]=[];
   programy: Program[]=[];
   czyNaCzas: boolean=false;
   czas:number=1;
   selectedProgram?:Program;
+  wybranyTab:any;
 
   constructor(private apiService:ApiService) { }
 
@@ -27,7 +29,9 @@ export class ManualComponent implements OnInit,AfterViewInit{
     });
     this.apiService.getStanSubject().subscribe(s => 
       {
-        this.stany=s;
+        this.stanAll=s;
+        //this.stany=s.sekcje;
+        //console.log(s);
     });
     this.apiService.getProgramSubject().subscribe(s=>
       {
@@ -37,7 +41,7 @@ export class ManualComponent implements OnInit,AfterViewInit{
   setBtnStyle(s:Sekcja):string
   {
     //[className]="s.typ==0 ? 'btn btn-circle btn-xl btn-success' : 'btn btn-circle btn-xl btn-secondary'" 
-    let stan=this.stany.find(x=> x.sekcjaId== s.sekcjaId);
+    let stan=this.stanAll?.sekcje.find(x=> x.sekcjaId== s.sekcjaId);
     if(stan)
     {
       if(stan.stan)
@@ -51,17 +55,54 @@ export class ManualComponent implements OnInit,AfterViewInit{
     }
     return 'btn btn-circle btn-xl btn-warning';
   }
+  pobierzDane(i:number)
+  {
+    switch(i)
+    {
+      case 0:
+         this.apiService.getSekcje();
+         this.apiService.getProgram();
+        break;
+      case 1:
+        this.apiService.getSekcje();
+         this.apiService.getProgram();
+         this.apiService.getSekwencje();
+        break;
+     
+      default:
+        this.apiService.getSekcje();
+        this.apiService.getProgram();
+        this.apiService.getSekwencje();
+        this.apiService.getSystem();
+    }
+    
+  }
+  tabSelectedTabChange(e:any)
+  {
+    this.wybranyTab=e;
+    console.log("wybrany tab: ",e);
+    this.pobierzDane(e.index);
+   
+  }
   ngAfterViewInit() {
     // viewChild is updated after the view has been checked
     console.log("manual view init");
-    this.apiService.getSekcje();
-    this.apiService.getStan();
-    this.apiService.getProgram();
+    this.pobierzDane(-1);
+    
   }
   changeCzas(i:number)
   {
     this.czas=this.czas+i;
     if(this.czas<1)this.czas=1;
+  }
+  dajCzasDoWylaczeniaSekcji(sId?:number):string
+  {
+    const x=this.stanAll?.sekcje.find(a=>a.sekcjaId==sId);
+    if(x?.autoSwitchActive&& this.stanAll)
+    {
+      return this.apiService.getTimeStrig((x.lastStateChanged+x.timeToSwitch-this.stanAll?.upT)/1000);
+    }else
+    return "";
   }
   czasToStr()
   {
@@ -85,15 +126,15 @@ export class ManualComponent implements OnInit,AfterViewInit{
   {
     console.log("Klik sekcja "+s.nazwa+": "+s.sekcjaId);
     
-    let obecnyStan=this.stany.find(x=> x.sekcjaId== s.sekcjaId);
+    let obecnyStan=this.stanAll?.sekcje.find(x=> x.sekcjaId== s.sekcjaId);
 
 
-    
-    let stan={
+    let tmpStan=obecnyStan? !obecnyStan.stan : true;
+    let stan:StanSet={
       sekcjaId:obecnyStan? obecnyStan.sekcjaId:-1,
-      stan: obecnyStan? !obecnyStan.stan : true,
-      autoSwitchActive:this.czyNaCzas?this.czas:0,
-      lastStateChanged:0
+      stan: tmpStan? 1:0 ,
+      czas:this.czyNaCzas?this.czas:0,
+      
     };
     this.apiService.setStan(stan);
   }

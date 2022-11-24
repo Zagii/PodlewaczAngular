@@ -4,7 +4,7 @@
        <div class="labelDiv"> Program </div>
     </div>
     <div class="column side">
-      <mat-form-field appearance="fill"> 
+      <mat-form-field *ngIf="selectedProgram" appearance="fill"> 
             
             <mat-label>Wybierz program do konfigracji</mat-label> 
             <mat-select *ngIf="selectedProgram" [ngModel]="selectedProgram.programId" name="program"
@@ -33,7 +33,7 @@
         Start: {{getTimeString(selectedSekwencja.startAkcji)}}, <br>
         Długość: {{getTimeString(selectedSekwencja.czasTrwaniaAkcji)}},<br>
         Koniec: {{getTimeString(selectedSekwencja.startAkcji+selectedSekwencja.czasTrwaniaAkcji)}}<br>
-        Całkowity czas trwania programu: {{selectedProgram?.calkowityCzasTrwaniaProgramu}}
+        Całkowity czas trwania programu: {{getTimeString(selectedProgram?.calkowityCzasTrwaniaProgramu)}}
     </div>
     <div class="column reszta" *ngIf="!selectedSekwencja">
         Wybierz z diagramu krok do edycji...

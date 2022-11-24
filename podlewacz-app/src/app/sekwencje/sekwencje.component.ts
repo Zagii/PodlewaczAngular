@@ -136,6 +136,8 @@ constructor(private apiService:ApiService,
       {
 
         this.programy=p;
+      
+      if(this.selectedProgram==undefined)  
         this.selectedProgram=p[0];//JSON.parse(JSON.stringify(p[0]));
        
         
@@ -164,7 +166,7 @@ constructor(private apiService:ApiService,
   
 
   }
-  dodajSekwencje()
+  /*dodajSekwencje()
   {
     console.log("Dodaj program btn");
     if(this.zmieniane)
@@ -182,30 +184,25 @@ constructor(private apiService:ApiService,
     }
  
     this.zmieniane=true;
-  }
+  }*/
   
-  usunSekwencje()
+  usunSekwencje(sekwencjaId:number)
   {
    if(confirm("Czy napewno chcesz usunąć krok z programu: "+this.selectedProgram?.nazwa)) 
    {
     /*if(this.selectedProgram)
       this.apiService.deleteProgram(this.selectedProgram);
     */
+    this.apiService.deleteSekwencja(sekwencjaId);
     this.zmieniane=false;
    }else
    {
     console.log("anulowano usunSekwencje");
    }
   }
-  wyslijZmiany()
+  dodajZmienSekwencje(s:Sekwencja)
   {
-    if(this.selectedSekwencja)
-      {
-        //this.apiService.sendProgram(this.selectedProgram);
-        this.zmieniane=false;
-      }
-    else
-     console.log(this.selectedProgram);
+    this.apiService.sendSekwencja(s);
   }
   
   getTimeString(sekundy?:number):string
@@ -237,7 +234,7 @@ constructor(private apiService:ApiService,
     if(czyNowa)
     {
       // todo tworzenie nowej sekwecji, tymczasowo 0
-      if(this.selectedProgram?.programId)
+      if(this.selectedProgram)
       {
         console.log("nie wybrano sekwencji wiec tworze nowa");
         sek={
@@ -290,21 +287,13 @@ constructor(private apiService:ApiService,
           if(r.data.sekwencja.sekwencjaId==-1)
           {
             console.log("dialog OK dodaje")
-            r.data.sekwencja.sekwencjaId=this.getRandomInt(100,1000); //// <<<<<<<<<<<<<<<<<!!!!!!! usunac TODO
-            this.sekwencje.push(r.data.sekwencja);
+            
           }else
           {
             console.log("dialog OK edytuje");
-            let s=this.sekwencje.findIndex((x:Sekwencja)=>x.sekwencjaId===r.data.sekwencja.sekwencjaId);
-            if(s>=0)
-              {
-                console.log("dialog OK zmiana index: "+s);
-                this.sekwencje[s]=r.data.sekwencja;
-              }else
-              {
-                console.log("dialog OK blad findindex");
-              }
           }
+          this.dodajZmienSekwencje(r.data.sekwencja);
+            
         
           this.aktualizujDane();
           this.odswiezWykres();
@@ -325,6 +314,7 @@ constructor(private apiService:ApiService,
     });
    
   }
+ 
   analujZmiany()
   {
     console.log("anulujZminay");
@@ -341,7 +331,7 @@ constructor(private apiService:ApiService,
        // wykryto zmiane
        if(confirm("Czy napewno chcesz usunąć wybrany krok z programu "+this.selectedProgram.nazwa+"?")) {
         console.log("zapis post");
-        //TODO usun sekwencje
+        this.usunSekwencje(this.selectedSekwencja.sekwencjaId);
       }else
       {
         console.log("anuluj usun");

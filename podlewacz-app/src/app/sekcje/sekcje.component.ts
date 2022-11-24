@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentInit,  Component, Input, OnChanges, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Sekcja } from 'src/assets/typyObiektow';
 //import { MaterialModule} from '../material/material.module';
@@ -9,14 +9,21 @@ import { Sekcja } from 'src/assets/typyObiektow';
   templateUrl: './sekcje.component.html',
   styleUrls: ['./sekcje.component.scss']
 })
-export class SekcjeComponent implements OnInit {
+export class SekcjeComponent implements OnInit,OnChanges {
+  @Input()
+  tab:any;
   zmieniana:boolean=false;
   typySekcji: string[] = ['Fizyczna', 'RestFull', 'Mqtt'];
   wybranyTyp?: any;
   sekcje: Sekcja[]=[];
   selectedSekcja?: Sekcja=this.sekcje[0];
 
-
+  ngOnChanges() {
+    // viewChild is updated after the view has been checked
+   // console.log("SekcjeComponent view init");
+   // this.apiService.getSekcje();
+    
+  }
   constructor(private apiService:ApiService) { }
 
   ngOnInit(): void {

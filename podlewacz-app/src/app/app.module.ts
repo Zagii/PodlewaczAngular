@@ -74,7 +74,7 @@ import { environment } from '../environments/environment';
     FontAwesomeModule,
     MaterialModule,
     FlexLayoutModule,
-    HttpClientInMemoryWebApiModule.forRoot(  InMemoryDataService, { dataEncapsulation: false }  ),
+   // HttpClientInMemoryWebApiModule.forRoot(  InMemoryDataService, { dataEncapsulation: false }  ),
     Ng2GoogleChartsModule,
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),

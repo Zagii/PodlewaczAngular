@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Program } from 'src/assets/typyObiektow';
 import { ApiService } from '../api.service';
 
@@ -7,7 +7,7 @@ import { ApiService } from '../api.service';
   templateUrl: './harmonogram.component.html',
   styleUrls: ['./harmonogram.component.scss']
 })
-export class HarmonogramComponent implements OnInit {
+export class HarmonogramComponent implements OnInit,AfterViewInit {
   odswWykres=false;
   selectedProgram?:Program;
   programy:Program[]=[];
@@ -29,6 +29,12 @@ export class HarmonogramComponent implements OnInit {
         this.aktualizujData();
         
     });
+  }
+  ngAfterViewInit() {
+    // viewChild is updated after the view has been checked
+    console.log("manual view init");
+    this.apiService.getSekwencje();
+    this.apiService.getProgram();
   }
  /* wymuszenie odswiezenia wykresu poprzez przekazanie wartosci do zmiennej kora nic nie robi
   w ten sposob oszukuje angulara, brzydkie ale działa */

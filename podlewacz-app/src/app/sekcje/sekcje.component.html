@@ -60,7 +60,7 @@
         <div *ngSwitchCase="0">
          
             <label class="label" for="sekcja-pin">Numer pinu: </label>
-            <input id="sekcja-pin"(ngModelChange)="onChange($event)" [(ngModel)]="selectedSekcja.pin" placeholder="pin" type="number"
+            <input matInput id="sekcja-pin"(ngModelChange)="onChange($event)" [(ngModel)]="selectedSekcja.pin" placeholder="pin" type="number"
             max="7" min="0">
           
         </div>
@@ -70,7 +70,7 @@
               <label  for="sekcja-apiOnUrl">apiOnUrl </label>
             </div>
             <div class="column duza">
-              <input  id="sekcja-apiOnUrl" [(ngModel)]="selectedSekcja.apiOnUrl" (ngModelChange)="onChange($event)" placeholder="apiOnUrl">
+              <input matInput id="sekcja-apiOnUrl" [(ngModel)]="selectedSekcja.apiOnUrl" (ngModelChange)="onChange($event)" placeholder="apiOnUrl">
             </div>
           </div>
           <div class="row">
@@ -78,7 +78,7 @@
               <label class="label" for="sekcja-apiOnJson">apiOnJson</label>
             </div>
             <div class="column duza">
-              <input id="sekcja-apiOnJson" [(ngModel)]="selectedSekcja.apiOnJson" (ngModelChange)="onChange($event)" placeholder="apiOnJson">
+              <input matInput id="sekcja-apiOnJson" [(ngModel)]="selectedSekcja.apiOnJson" (ngModelChange)="onChange($event)" placeholder="apiOnJson">
             </div>
           </div>  
           <div class="row">
@@ -86,7 +86,7 @@
               <label class="label" for="sekcja-apiOffUrl">apiOffUrl</label>
             </div>
             <div class="column duza">
-              <input id="sekcja-apiOffUrl" [(ngModel)]="selectedSekcja.apiOffUrl" (ngModelChange)="onChange($event)" placeholder="apiOffUrl">
+              <input matInput id="sekcja-apiOffUrl" [(ngModel)]="selectedSekcja.apiOffUrl" (ngModelChange)="onChange($event)" placeholder="apiOffUrl">
             </div>
           </div>
           <div class="row">
@@ -94,7 +94,7 @@
               <label class="label" for="sekcja-apiOffJson">apiOffJson</label>
             </div>
             <div class="column duza">
-              <input id="sekcja-apiOffJson" [(ngModel)]="selectedSekcja.apiOffJson" (ngModelChange)="onChange($event)" placeholder="apiOffJson">
+              <input matInput id="sekcja-apiOffJson" [(ngModel)]="selectedSekcja.apiOffJson" (ngModelChange)="onChange($event)" placeholder="apiOffJson">
             </div>
           </div>
             
