@@ -5,7 +5,7 @@
               
       
             </div>
-      <mat-tab-group >
+      <mat-tab-group (selectedTabChange)="tabSelectedTabChange($event)">
         <mat-tab label="Sekcje"> 
           <div class="tabContainer">
           <div class="row">
@@ -48,7 +48,8 @@
                 <button [ngClass]="setBtnStyle(s)" (click)="klik(s)">
                  <span>
                   <fa-icon [icon]="faShower" size="2xl"></fa-icon><BR>
-                     {{s.nazwa}}
+                     {{s.nazwa}}<br>
+                     {{dajCzasDoWylaczeniaSekcji(s.sekcjaId)}}
                   </span>
                 </button>
               </div>
