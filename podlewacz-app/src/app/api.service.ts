@@ -266,6 +266,7 @@ export class ApiService {
     if(sek)
     {
       this.sekwencje=sek;
+      console.log("sekwencje: ",sek);
       this.refreshProgram(this.programy);
       this.sekwencjaSubject.next(sek);   
     }
@@ -337,6 +338,7 @@ export class ApiService {
       { 
         if(s)
         {
+          console.log(s);
           s.sekcje=s.sekcje.sort((a,b)=>a.sekcjaId-b.sekcjaId);
           this.stanSubject.next(s);   
           

@@ -24,6 +24,8 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
     podTytul:string="podTytuł";
   @Input()
     odswiez:boolean=false;
+  @Input()
+  pointerVal:number = -1;
   @Output() odswiezChange: EventEmitter<boolean> = new EventEmitter<boolean>();
   
   krokiTab=[1,5,10,20];
@@ -66,6 +68,7 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
       height: 300
     },
     xAxis: {
+      
       min: 0,
       scale: true,
       axisLabel: {
@@ -77,10 +80,29 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
            return that.formatujOsX(val);
       //    console.log(val);
          
-        }
-        
-        
+        }    
       }
+      /////////////////
+     /* ,   axisPointer: {
+        value: this.pointerVal,
+       // snap: true,
+        lineStyle: {
+          color: '#7581BD',
+          width: 2
+        },*/
+       /* label: {
+          show: true,
+          formatter: function (params) {
+            return params.value;
+          },
+          backgroundColor: '#7581BD'
+        },*/
+      /*  handle: {
+          show: this.pointerVal>0?true:false,
+          color: '#7581BD'
+        }
+      },*/
+      ////////////
     },
     yAxis: {
       data: this.nazwyY
@@ -92,6 +114,14 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
         itemStyle: { opacity: 0.8 },
         encode: { x: [1, 2], y: 0 , tooltip:[3,4]},
         data: this.dane,
+        markLine: {
+          symbol:'circle',
+          data: [
+            {
+              name: 'Horizontal line with Y value at 100',
+              xAxis: this.pointerVal
+          }]
+        }
       //  emphasis: this.emphasisStyle
       }
     ]

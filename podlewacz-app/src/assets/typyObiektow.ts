@@ -44,7 +44,7 @@ export interface System {
     programId:number;
     sekwencjaId:number;
     sekcjaId:number;
-    akcja:boolean;
+    akcja:number;
     czasTrwaniaAkcji:number; // gdy czas==0 akcja nie powoduje antyakcji
     startAkcji:number; //start akcji 
     sekwencjaLastRun?:number;

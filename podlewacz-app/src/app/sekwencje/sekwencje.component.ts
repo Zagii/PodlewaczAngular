@@ -70,7 +70,7 @@ losuj()
     sekwencjaId: this.getRandomInt(0,1000),
     startAkcji:a,
     czasTrwaniaAkcji:b,
-    akcja:true,
+    akcja:1,
     sekcjaId:this.getRandomInt(0,7),
 
   }
@@ -203,6 +203,14 @@ constructor(private apiService:ApiService,
   dodajZmienSekwencje(s:Sekwencja)
   {
     this.apiService.sendSekwencja(s);
+  }
+  tmpZmien()
+  {
+    this.sekwencje.forEach(el => {
+      el.akcja=1;
+      this.dodajZmienSekwencje(el);
+      
+    });
   }
   
   getTimeString(sekundy?:number):string

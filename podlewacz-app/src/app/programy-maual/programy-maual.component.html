@@ -56,6 +56,9 @@
         <button class="btn btn-success" [disabled]="progUruchomiony" (click)="start()" type="submit"><mat-icon>play_circle_filled</mat-icon>Start</button>
         <button class="btn btn-danger" [disabled]="!progUruchomiony" (click)="stop()" type="cancel"><mat-icon>stop</mat-icon>Stop</button>
         
+
+        <button class="btn btn-danger" (click)="pointer()" type="cancel">xxxx</button>
+        
     </div>
     
 </div>
@@ -67,5 +70,6 @@
         [tytul]="'Przebieg programu'"
         [podTytul]="'Kolejne etapy podlewania'"
         [formatujOsX]="formatujOsX"
+        [pointerVal]="pointerVal"
         ></app-kontrolka-wykres>
 

@@ -18,7 +18,8 @@ export class ProgramyMaualComponent implements OnInit {
   selectedProgram?:Program;
   programy:Program[]=[];
   categories = ['a','b'];
-
+ 
+  pointerVal=1;
 
   sekwencje:Sekwencja[]=[];
   sekcje:Sekcja[]=[];
@@ -143,5 +144,9 @@ dajNazweSekcji(s:Sekwencja):String
   stop()
   {
     this.progUruchomiony=false;
+  }
+  pointer()
+  {
+    this.pointerVal=this.pointerVal+1;
   }
 }
