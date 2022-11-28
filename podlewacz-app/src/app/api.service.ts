@@ -338,15 +338,19 @@ export class ApiService {
       { 
         if(s)
         {
-          console.log(s);
-          s.sekcje=s.sekcje.sort((a,b)=>a.sekcjaId-b.sekcjaId);
-          this.stanSubject.next(s);   
+          this.odswiezStan(s);  
           
         }else
         {
           console.log("brak stanow");
         }
       }); 
+  }
+  odswiezStan(stan:StanAll)
+  {
+    console.log(stan)
+    stan.sekcje=stan.sekcje.sort((a,b)=>a.sekcjaId-b.sekcjaId);
+    this.stanSubject.next(stan); 
   }
   setStan(stan:StanSet):void{
         
@@ -363,9 +367,7 @@ export class ApiService {
     )
     .subscribe(stan =>
       { 
-        console.log(stan)
-        stan.sekcje=stan.sekcje.sort((a,b)=>a.sekcjaId-b.sekcjaId);
-        this.stanSubject.next(stan);   
+          this.odswiezStan(stan);
       });
   }
 
@@ -387,10 +389,27 @@ export class ApiService {
     )
     .subscribe(s =>
       { 
-        //this.refreshSekwencja(s); 
+        this.odswiezStan(s); 
       });
   }
-
+  stopProgram()
+  {
+    console.log("stopProgram: ");
+    const options = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json', }), 
+    };
+    
+   
+    this.http.post<any>(this.ipUrl+STOP_PROGRAM,options) 
+    .pipe(
+ //     retry(3), // retry a failed request up to 3 times
+      catchError(this.handleError) // then handle the error
+    )
+    .subscribe(s =>
+      { 
+        this.odswiezStan(s);
+      });
+  }
   getTimeStrig(sekundy?:number):string
 {
   if(sekundy==undefined) return "?";

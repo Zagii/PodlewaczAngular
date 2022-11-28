@@ -114,14 +114,14 @@ export class KontrolkaWykresComponent implements OnInit, OnChanges {
         itemStyle: { opacity: 0.8 },
         encode: { x: [1, 2], y: 0 , tooltip:[3,4]},
         data: this.dane,
-        markLine: {
+        markLine:this.pointerVal>0? {
           symbol:'circle',
           data: [
             {
               name: 'Horizontal line with Y value at 100',
               xAxis: this.pointerVal
           }]
-        }
+        }: {},
       //  emphasis: this.emphasisStyle
       }
     ]

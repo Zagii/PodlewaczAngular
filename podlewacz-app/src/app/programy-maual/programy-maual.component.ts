@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Program, Sekcja, Sekwencja } from 'src/assets/typyObiektow';
+import { Program, Sekcja, Sekwencja, StanAll } from 'src/assets/typyObiektow';
 import { ApiService } from '../api.service';
 import {faClock } from '@fortawesome/free-solid-svg-icons';
 //import { TitleStrategy } from '@angular/router';
@@ -18,8 +18,9 @@ export class ProgramyMaualComponent implements OnInit {
   selectedProgram?:Program;
   programy:Program[]=[];
   categories = ['a','b'];
+  stanAll!: StanAll;
  
-  pointerVal=1;
+  pointerVal=-1;
 
   sekwencje:Sekwencja[]=[];
   sekcje:Sekcja[]=[];
@@ -40,9 +41,10 @@ dajNazweSekcji(s:Sekwencja):String
   return 'brak';
 }
 
-  changeSelectProgram(p:any)
+  changeSelectProgram(p:Program)
   {
     this.selectedProgram=p;
+    console.log("selectedProgram: ",p.programId);
     this.aktualizujDane();
   }
   aktualizujDane()
@@ -83,9 +85,8 @@ dajNazweSekcji(s:Sekwencja):String
   ngOnInit(): void {
     this.apiService.getProgramSubject().subscribe(p => 
       {
-
         this.programy=p;
-        this.selectedProgram=p[0];//JSON.parse(JSON.stringify(p[0]));      
+        this.changeSelectProgram(p[0]);//JSON.parse(JSON.stringify(p[0]));      
     });
     this.apiService.getSekwencjeSubject().subscribe(p => 
       {
@@ -100,6 +101,19 @@ dajNazweSekcji(s:Sekwencja):String
         this.categories=this.sekcje.map(x=> x.nazwa);
         this.aktualizujDane();
     });
+    this.apiService.getStanSubject().subscribe(s=>
+      {
+        this.stanAll=s;
+        if(s.program.uruchomionyProgramId!=undefined && s.program.uruchomionyProgramId == this.selectedProgram?.programId)
+        {
+          if(s.program.obecnaSekundaDzialaniaProgramu)
+            this.pointerVal=s.program.obecnaSekundaDzialaniaProgramu;
+        }else
+        {
+          this.progUruchomiony=false;
+          this.pointerVal=-1;
+        }
+      });
   }
 
   
@@ -137,13 +151,15 @@ dajNazweSekcji(s:Sekwencja):String
   {
     if(this.selectedProgram)
     {
-      const i=this.selectedProgram.programId ? this.selectedProgram.programId :-1;
+      const i=this.selectedProgram.programId!=undefined ? this.selectedProgram.programId :-1;
       this.progUruchomiony=true;
-    this.apiService.startProgram(i,this.predkoscProgramu)
-  }}
+      this.apiService.startProgram(i,this.predkoscProgramu)
+    }
+  }
   stop()
   {
     this.progUruchomiony=false;
+    this.apiService.stopProgram();
   }
   pointer()
   {

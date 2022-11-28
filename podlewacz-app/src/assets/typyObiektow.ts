@@ -54,6 +54,12 @@ export interface System {
   ntp:number;
   upT:number; //millis od restartu 
   sekcje:Stan[];
+  program:{
+    czasOstatniegoTestu:number;
+    lastRunProgramId?:number;
+    obecnaSekundaDzialaniaProgramu?:number;
+    uruchomionyProgramId?:number;
+    }   
   }
   export interface Stan {
     sekcjaId:number;
