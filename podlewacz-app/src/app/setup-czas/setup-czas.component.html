@@ -6,8 +6,8 @@ Tryb manualny <mat-slide-toggle [(ngModel)]="czyAktywnyNTP" (ngModelChange)="onC
     <h2>Tryb automatyczny</h2>
     SerwerNTP: europe.pool.ntp.org <br>
     port: domyślny <br>
-    data: <br>
-    dzień tygodnia: <br>
+    data: {{data}}<br>
+    dzień tygodnia: {{dzienTyg}}<br>
     offset:  {{getOffsetStr()}} <br>
     <app-kontrolka-czas [tytul]="'Strefa czasowa'" [(sekundy)]="offset" [btnSzt]="2"
     [minSekund]="-43200"[maxSekund]="50400" ></app-kontrolka-czas>

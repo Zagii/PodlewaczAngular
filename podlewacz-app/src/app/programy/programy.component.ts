@@ -53,7 +53,8 @@ export class ProgramyComponent implements OnInit {
       {
 
         this.programy=p;
-        this.selectedProgram=JSON.parse(JSON.stringify(p[0]));
+        if(this.selectedProgram==undefined)
+            this.selectedProgram=JSON.parse(JSON.stringify(p[0]));
         this.zmieniany=false;
         
     });

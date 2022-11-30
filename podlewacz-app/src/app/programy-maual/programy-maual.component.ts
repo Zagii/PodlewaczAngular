@@ -40,7 +40,12 @@ dajNazweSekcji(s:Sekwencja):String
     return x;
   return 'brak';
 }
-
+sliderValChange()
+{
+  console.log("sliderValChangem: ",this.predkoscProgramu);
+  this.aktualizujDane();
+  this.odswiezWykres();
+}
   changeSelectProgram(p:Program)
   {
     this.selectedProgram=p;
@@ -57,20 +62,23 @@ dajNazweSekcji(s:Sekwencja):String
     {
       if(this.selectedProgram && s.programId==this.selectedProgram.programId)
       {
+        let start= Math.floor(s.startAkcji*this.predkoscProgramu);
+        let czas=Math.floor(s.czasTrwaniaAkcji*this.predkoscProgramu);
+        let koniec = Math.floor(s.startAkcji*this.predkoscProgramu)+Math.floor(s.czasTrwaniaAkcji*this.predkoscProgramu);
         const o:any=
         {
         //  name: that.dajNazweSekcji(s),
           tooltipTxt: that.dajNazweSekcji(s)+'<br> start w: '+ 
-                        that.apiService.getTimeStrig(s.startAkcji)+'<br> czas trwania: '+
-                        that.apiService.getTimeStrig(s.czasTrwaniaAkcji)+'<br> koniec w: '+
-                        that.apiService.getTimeStrig((s.startAkcji+s.czasTrwaniaAkcji)),
+                        that.apiService.getTimeStrig(start)+'<br> czas trwania: '+
+                        that.apiService.getTimeStrig(czas)+'<br> koniec w: '+
+                        that.apiService.getTimeStrig(koniec),
           sekwencja:s,
                 //  sekcjaId, start, koniec, dlugosc , nazwa sekcji, sekwencjaId
           value: [s.sekcjaId,
-                  s.startAkcji,
-                  (s.startAkcji+s.czasTrwaniaAkcji),
-                  s.czasTrwaniaAkcji,
-                  that.apiService.getTimeStrig(s.czasTrwaniaAkcji),
+                  start,
+                  koniec,
+                  czas,
+                  that.apiService.getTimeStrig(czas),
                   s.sekwencjaId],
           itemStyle: {normal:{color:'#7b9cef'}}
         }            
@@ -107,8 +115,16 @@ dajNazweSekcji(s:Sekwencja):String
         if(s.program.uruchomionyProgramId!=undefined && s.program.uruchomionyProgramId == this.selectedProgram?.programId)
         {
           if(s.program.obecnaSekundaDzialaniaProgramu)
-            this.pointerVal=s.program.obecnaSekundaDzialaniaProgramu;
-        }else
+            {
+              this.pointerVal=s.program.obecnaSekundaDzialaniaProgramu;
+              if(this.predkoscProgramu!=s.program.x)
+              {
+                this.predkoscProgramu=s.program.x;
+                this.aktualizujDane();
+                this.odswiezWykres();
+              }
+            }
+          }else
         {
           this.progUruchomiony=false;
           this.pointerVal=-1;
@@ -121,7 +137,8 @@ dajNazweSekcji(s:Sekwencja):String
   
   getCalkowityCzas():string
   {
-    return this.apiService.getTimeStrig(this.selectedProgram?.calkowityCzasTrwaniaProgramu);
+    const t= (this.selectedProgram?.calkowityCzasTrwaniaProgramu!=undefined) ? this.selectedProgram?.calkowityCzasTrwaniaProgramu*this.predkoscProgramu:0;
+    return this.apiService.getTimeStrig(t);
   }
   
   odswiezWykres()

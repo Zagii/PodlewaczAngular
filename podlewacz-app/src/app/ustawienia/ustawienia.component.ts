@@ -18,16 +18,19 @@ export class UstawieniaComponent implements OnInit {
   {
     switch(i)
     {
-      case 0:
+      case 0: //sekcje
          this.apiService.getSekcje();
         break;
-      case 1:
+      case 1://program
          this.apiService.getProgram();
         break;
-      case 2:
+      case 2://kroki
          this.apiService.getProgram();
          this.apiService.getSekwencje();
          this.apiService.getSekcje();
+        break;
+      case 3: //czas
+          this.apiService.getSystem();
         break;
       default:
         this.apiService.getSekcje();

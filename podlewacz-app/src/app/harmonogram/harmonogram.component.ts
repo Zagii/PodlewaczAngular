@@ -76,8 +76,8 @@ export class HarmonogramComponent implements OnInit,AfterViewInit {
  
   this.programy.forEach( (p:Program,index) =>
     {
-     // if(this.selectedProgram && p.programId==this.selectedProgram.programId)
-   //   {
+  
+    if(p.aktywny){
         for(let d=0;d<p.dni.length;d++)
         {
           if(p.dni[d]=="1")
@@ -108,7 +108,7 @@ export class HarmonogramComponent implements OnInit,AfterViewInit {
               });
             }
           }
-     // }
+      }
     });
 
 

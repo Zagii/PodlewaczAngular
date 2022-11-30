@@ -59,6 +59,7 @@ export interface System {
     lastRunProgramId?:number;
     obecnaSekundaDzialaniaProgramu?:number;
     uruchomionyProgramId?:number;
+    x:number;
     }   
   }
   export interface Stan {

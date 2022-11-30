@@ -197,6 +197,7 @@ export class ApiService {
     .subscribe(s =>
       { 
         this.system=s;
+        console.log("getSystem: ",s);
         this.systemSubject.next(s);   
       }); 
   }
@@ -225,7 +226,13 @@ export class ApiService {
     console.log("sendProgram: "+JSON.stringify(program));
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', }), 
-      body: {plain:program},
+      body: {plain:{
+        nazwa:program.nazwa,
+         programId: program.programId,
+        dni: program.dni,
+        aktywny:program.aktywny?1:0, // czy program jest aktywny
+        godziny:program.godziny
+      }},
     };
    
     this.http.post<Program[]>(this.ipUrl+SET_PROGRAM,program)
@@ -348,7 +355,12 @@ export class ApiService {
   }
   odswiezStan(stan:StanAll)
   {
-    console.log(stan)
+    //console.log(stan)
+    if(stan.program.uruchomionyProgramId )
+    {
+      console.log(stan.program);
+
+    }
     stan.sekcje=stan.sekcje.sort((a,b)=>a.sekcjaId-b.sekcjaId);
     this.stanSubject.next(stan); 
   }
