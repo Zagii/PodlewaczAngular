@@ -234,8 +234,12 @@ export class ApiService {
         godziny:program.godziny
       }},
     };
-   
-    this.http.post<Program[]>(this.ipUrl+SET_PROGRAM,program)
+
+    let req= this.http.put<Program[]>(this.ipUrl+SET_PROGRAM,program)
+    if(program.programId!= undefined && program.programId<0)
+      req= this.http.post<Program[]>(this.ipUrl+SET_PROGRAM,program)
+    
+    req  
     .pipe(
  //     retry(3), // retry a failed request up to 3 times
       catchError(this.handleError) // then handle the error
