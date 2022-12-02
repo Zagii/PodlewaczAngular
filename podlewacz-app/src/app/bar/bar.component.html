@@ -2,8 +2,10 @@
    <table>
     <tr>
      <td> <span id="data" >{{formatujGodzine(gui.aktualnaData)}}</span> </td>
-     <!--<td> <span>Ostatni program: </span> <span id="ostProg">{{gui.ostatniProgram.nazwa}}</span>, aktywny od: {{gui.ostatniProgram.lastProgramRun}} </td>
-     --><td> <span>Ostatnia zmiana: </span><span id="ostAkcja">{{gui.ostatniaAkcja.nazwaSekcji}}</span> minęło: <span id="ostAkcjaCzas">{{gui.ostatniaAkcja.lastChange}} </span></td> 
+     <td> <span>Ostatni program: </span> <span id="ostProg">{{gui.ostatniProgram.nazwa}}</span>,
+      <!-- aktywny od: {{gui.ostatniProgram.lastProgramRun}} 
+      --></td>
+     <td> <span>Ostatnia zmiana: </span><span id="ostAkcja">{{gui.ostatniaAkcja.nazwaSekcji}}</span> minęło: <span id="ostAkcjaCzas">{{gui.ostatniaAkcja.lastChange}} </span></td> 
       <td> <span>Stan sekcji:  </span><div style="text-align:center; display: inline;" *ngFor="let s of stany?.sekcje" >
          <span [className]="s.stan ? 'dotOn' : 'dotOff'"> {{s.sekcjaId}}</span>
          

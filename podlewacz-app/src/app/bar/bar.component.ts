@@ -41,8 +41,13 @@ export class BarComponent implements OnInit {
               
 
               this.gui.ostatniaAkcja.lastChange=this.apiService.getTimeStrig((s.upT-last)/1000);
-              this.gui.ostatniProgram.lastProgramRun=s.ntp+"";
-              this.gui.ostatniProgram.nazwa=last+"";
+              let p=this.apiService.programy.find(x=>x.programId===s.program.lastRunProgramId);
+              if(p)
+               { 
+             //   if(p.lastProgramRun)
+              //  this.gui.ostatniProgram.lastProgramRun=this.apiService.getTimeStrig(p.lastProgramRun/1000)+"";
+                this.gui.ostatniProgram.nazwa=p.nazwa+"";
+              }
             }
         });
   }

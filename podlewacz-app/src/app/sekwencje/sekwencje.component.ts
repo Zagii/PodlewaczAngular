@@ -202,14 +202,17 @@ constructor(private apiService:ApiService,
   }
   dodajZmienSekwencje(s:Sekwencja)
   {
+    console.log("dodajZmienSekwencje", s);
     this.apiService.sendSekwencja(s);
   }
   tmpZmien()
   {
     this.sekwencje.forEach(el => {
-      el.akcja=1;
-      this.dodajZmienSekwencje(el);
-      
+      if(el.akcja==0)
+      { 
+        el.akcja=1;
+        this.dodajZmienSekwencje(el);
+      }
     });
   }
   
@@ -235,31 +238,30 @@ constructor(private apiService:ApiService,
   openDialog(czyNowa?:boolean): void {
 
     if(!czyNowa)czyNowa=false;
-    let sek;
+    let sek:Sekwencja={
+      sekwencjaId:-1,
+      programId:-1,
+      sekcjaId:0,
+      startAkcji:0,
+      czasTrwaniaAkcji:10,
+      akcja:1,
+    };
     
     console.log("openDialog czyNowa: "+czyNowa, ", selectedSekwencja ", this.selectedSekwencja);
  
     if(czyNowa)
     {
       // todo tworzenie nowej sekwecji, tymczasowo 0
-      if(this.selectedProgram)
+      if(this.selectedProgram && this.selectedProgram?.programId)
       {
         console.log("nie wybrano sekwencji wiec tworze nowa");
-        sek={
-          sekwencjaId:-1,
-          programId:this.selectedProgram?.programId,
-          sekcjaId:0,
-          startAkcji:0,
-          czasTrwaniaAkcji:10,
-          akcja:true,
-
-        };
+        sek.programId=this.selectedProgram.programId;
       }else console.log("nie wybrano programu ERR");
     }else
     {
       console.log("klonuje sekwencje do dialogbox");
       sek=JSON.parse(JSON.stringify(this.selectedSekwencja));
-
+      //sek.akcja=1;
     }
   //  let sekwencja=this.sekwencje.find(x=>x.sekwencjaId==sekwencjaId);
     let data:DialogData={

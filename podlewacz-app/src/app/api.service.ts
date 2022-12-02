@@ -58,7 +58,7 @@ export class ApiService {
   private sekwencjaSubject: Subject<Sekwencja[]> = new Subject<Sekwencja[]>();
   private stanSubject: Subject<StanAll> = new Subject<StanAll>();
   
-  private programy:Program[]=[];
+  public programy:Program[]=[];
   private sekwencje:Sekwencja[]=[];
   
   public sekcje:Sekcja[]=[];
@@ -223,22 +223,30 @@ export class ApiService {
   }
   sendProgram(program:Program): void {
       
-    console.log("sendProgram: "+JSON.stringify(program));
+    
+    let pId=-1;
+      if(program.programId!=undefined)
+        pId=program.programId;
+
+    console.log("sendProgram: ",pId,JSON.stringify(program));
     const options = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', }), 
-      body: {plain:{
+    };
+    const  body= {
         nazwa:program.nazwa,
-         programId: program.programId,
+         programId: pId,
         dni: program.dni,
         aktywny:program.aktywny?1:0, // czy program jest aktywny
         godziny:program.godziny
-      }},
-    };
-
-    let req= this.http.put<Program[]>(this.ipUrl+SET_PROGRAM,program)
-    if(program.programId!= undefined && program.programId<0)
-      req= this.http.post<Program[]>(this.ipUrl+SET_PROGRAM,program)
+      };
     
+      
+
+    let req= this.http.put<Program[]>(this.ipUrl+SET_PROGRAM,body,options);
+    if( pId<0)
+      req= this.http.post<Program[]>(this.ipUrl+SET_PROGRAM,body,options);
+    
+     console.log(req); 
     req  
     .pipe(
  //     retry(3), // retry a failed request up to 3 times
@@ -303,6 +311,7 @@ export class ApiService {
       headers: new HttpHeaders({ 'Content-Type': 'application/json', }), 
       body: {plain:sekw},
     };
+    
     let req= this.http.put<Sekwencja[]>(this.ipUrl+SET_SEKWENCJA,sekw);
     if(sekw.sekwencjaId<0)
       req= this.http.post<Sekwencja[]>(this.ipUrl+SET_SEKWENCJA,sekw);
